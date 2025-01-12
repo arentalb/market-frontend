@@ -1,7 +1,12 @@
+import LoginForm from "@/pages/LoginPage/forms/LoginForm.tsx";
+
 export function LoginPage() {
   return (
     <div className={"flex justify-center items-center h-screen"}>
-      <div>LoginPage</div>
+      <div>
+        <h1 className="text-4xl font-bold text-center mb-6">مارکێتی فۆرێڤەر</h1>
+        <LoginForm />
+      </div>
     </div>
   );
 }
