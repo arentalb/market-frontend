@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast.ts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/features/auth/authSlice.ts";
+import { UserRoles } from "@/features/auth/userRoles.ts";
 
 export default function LoginForm() {
   const form = useForm<LoginFormInputs>({
@@ -53,7 +54,13 @@ export default function LoginForm() {
         title: `Welcome ${response.data.user.name}`,
       });
       dispatch(setCredentials(response.data.user));
-      navigate("/app/dashboard");
+      if (response.data.user.role === UserRoles.Owner) {
+        navigate("/app/dashboard");
+        return;
+      } else if (response.data.user.role === UserRoles.Manager) {
+        navigate("/app/sale");
+        return;
+      }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({

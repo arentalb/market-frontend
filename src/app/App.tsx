@@ -22,21 +22,18 @@ import { MissingPage } from "@/pages/MissingPage.tsx";
 import { EmployeePage } from "@/pages/EmployeePage.tsx";
 import { CompanyPage } from "@/pages/CompanyPage.tsx";
 import { UnitPage } from "@/pages/UnitPage.tsx";
-
-const useAuth = () => {
-  const isAuthenticated = true;
-  const userRole = "owner";
-  return { isAuthenticated, userRole };
-};
+import { useSelector } from "react-redux";
+import { getUser } from "@/features/auth/authSlice.ts";
+import { UserRoles } from "@/features/auth/userRoles.ts";
 
 const PrivateRoute = ({ allowedRoles }: { allowedRoles?: string[] }) => {
-  const { isAuthenticated, userRole } = useAuth();
+  const user = useSelector(getUser);
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.some((role) => userRole.includes(role))) {
+  if (allowedRoles && !allowedRoles.some((role) => user.role.includes(role))) {
     return <Navigate to="/unauthorized" replace />;
   }
 
@@ -72,7 +69,7 @@ const router = createBrowserRouter([
           },
           {
             path: "dashboard",
-            element: <PrivateRoute allowedRoles={["owner"]} />,
+            element: <PrivateRoute allowedRoles={[UserRoles.Owner]} />,
             children: [{ index: true, element: <DashboardPage /> }],
           },
           {
