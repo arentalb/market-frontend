@@ -18,6 +18,8 @@ import {
   Users,
 } from "lucide-react";
 import { Outlet } from "react-router-dom";
+import { getUser } from "@/features/auth/authSlice.ts";
+import { useSelector } from "react-redux";
 
 export default function AppLayout() {
   const links = [
@@ -73,6 +75,7 @@ export default function AppLayout() {
     { name: "یەکەکان", href: "/units", icon: <Ungroup className="h-5 w-5" /> },
   ];
 
+  const user = useSelector(getUser);
   return (
     <div className="flex h-screen w-full">
       <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
@@ -95,10 +98,11 @@ export default function AppLayout() {
               ))}
             </nav>
           </div>
-          <div className="space-y-4">
+          <div className="text-center">
             <Button variant="destructive" size="sm" className="w-full">
               دەرچون
             </Button>
+            <p className={"text-xs"}>{user?.name}</p>
           </div>
         </div>
       </div>

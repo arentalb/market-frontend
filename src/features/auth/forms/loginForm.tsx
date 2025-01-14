@@ -22,7 +22,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form.tsx";
-// import { useToast } from "@/hooks/use-toast";
+import { useLoginMutation } from "@/features/auth/authApiSlice.ts";
+import { useToast } from "@/hooks/use-toast.ts";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/features/auth/authSlice.ts";
 
 export default function LoginForm() {
   const form = useForm<LoginFormInputs>({
@@ -32,32 +36,32 @@ export default function LoginForm() {
       password: "",
     },
   });
-  // const { data, isLoading, isError, error } = useTestQuery();
-  // const products: TProduct[] | undefined = productsResponse?.data || [];
-  // console.log(data);
-  // if (isError) {
-  //   console.log(error);
-  //   console.log(getServerError(error).message);
-  // }
 
-  // const { toast } = useToast();
+  const { toast } = useToast();
 
-  // const {} = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
   async function onSubmit(inputs: LoginFormInputs) {
-    console.log(inputs);
-    // try {
-    //   const { data } = await login({
-    //     email: inputs.email,
-    //     password: inputs.password,
-    //   });
-    //   toast({
-    //     title: `Welcome ${data?.user?.name}`,
-    //   });
-    // } catch (error) {
-    //   toast({
-    //     title: error.message,
-    //   });
-    // }
+    try {
+      const response = await login({
+        email: inputs.email,
+        password: inputs.password,
+      }).unwrap();
+
+      toast({
+        title: `Welcome ${response.data.user.name}`,
+      });
+      dispatch(setCredentials(response.data.user));
+      navigate("/app/dashboard");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast({
+        title: "هەڵە",
+        description: "زەنیاریەکان غەڵەتن دوبارە هەوڵ بدەرەوە",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -110,7 +114,7 @@ export default function LoginForm() {
                 />
               </div>
               <Button type="submit" className="w-full">
-                چونە ژورەوە{" "}
+                {isLoading ? "چاوەروانی ...." : "چونە ژورەوە"}
               </Button>
             </div>
           </form>

@@ -1,16 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store.ts";
-
-interface User {
-  username: string;
-  email: string;
-  role: string;
-  isVerified: boolean;
-}
-
-interface AuthState {
-  user: User | null;
-}
+import { RootState } from "@/app/store.ts";
+import { AuthState, User } from "@/features/auth/auth.types.ts";
 
 const initialState: AuthState = {
   user: localStorage.getItem("user")

@@ -1,42 +1,29 @@
 import apiSlice from "../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
-
-interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-interface RegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface User {
-  username: string;
-  email: string;
-  role: string;
-  isVerified: boolean;
-}
+import {
+  LoginRequest,
+  RegisterRequest,
+  User,
+} from "@/features/auth/auth.types.ts";
 
 const authSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<ApiResponse<{ user: User }>, LoginRequest>({
       query: (data) => ({
-        url: `auth/login`,
+        url: `auth/sign-in`,
         method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation<ApiResponse<null>, void>({
       query: () => ({
-        url: `auth/logout`,
+        url: `auth/sign-out`,
         method: "POST",
       }),
     }),
     register: builder.mutation<ApiResponse<string>, RegisterRequest>({
       query: (data) => ({
-        url: `auth/register`,
+        url: `auth/sign-up`,
         method: "POST",
         body: data,
       }),
