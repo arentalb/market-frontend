@@ -22,7 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form.tsx";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 
 export default function LoginForm() {
   const form = useForm<LoginFormInputs>({
@@ -32,22 +32,32 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const { toast } = useToast();
+  // const { data, isLoading, isError, error } = useTestQuery();
+  // const products: TProduct[] | undefined = productsResponse?.data || [];
+  // console.log(data);
+  // if (isError) {
+  //   console.log(error);
+  //   console.log(getServerError(error).message);
+  // }
 
+  // const { toast } = useToast();
+
+  // const {} = useLoginMutation();
   async function onSubmit(inputs: LoginFormInputs) {
-    try {
-      const { data } = await login({
-        email: inputs.email,
-        password: inputs.password,
-      });
-      toast({
-        title: `Welcome ${data?.user?.name}`,
-      });
-    } catch (error) {
-      toast({
-        title: error.message,
-      });
-    }
+    console.log(inputs);
+    // try {
+    //   const { data } = await login({
+    //     email: inputs.email,
+    //     password: inputs.password,
+    //   });
+    //   toast({
+    //     title: `Welcome ${data?.user?.name}`,
+    //   });
+    // } catch (error) {
+    //   toast({
+    //     title: error.message,
+    //   });
+    // }
   }
 
   return (
