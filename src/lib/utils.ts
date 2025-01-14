@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { TApiError } from "@/redux/types/TApiError.ts";
+import { TApiError } from "@/types/TApiError.ts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

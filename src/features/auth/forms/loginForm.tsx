@@ -4,16 +4,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/card.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   LoginFormInputs,
   loginSchema,
-} from "@/pages/LoginPage/forms/schema/loginSchema.ts";
+} from "@/features/auth/forms/loginSchema.ts";
 import {
   Form,
   FormControl,

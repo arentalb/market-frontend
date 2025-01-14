@@ -1,5 +1,5 @@
-import apiSlice from "../apiSlice";
-import { ApiResponse } from "@/redux/types/TApiResponse.ts";
+import apiSlice from "../../app/apiSlice.ts";
+import { ApiResponse } from "@/types/TApiResponse.ts";
 
 interface LoginRequest {
   email: string;

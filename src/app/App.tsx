@@ -4,24 +4,24 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import DashboardPage from "@/pages/DashboardPage/DashboardPage.tsx";
-import { UnauthorizedPage } from "@/pages/UnauthorizedPage/UnauthorizedPage.tsx";
-import { NotFoundPage } from "@/pages/NotFoundPage/NotFoundPage.tsx";
+import DashboardPage from "@/pages/DashboardPage.tsx";
+import { UnauthorizedPage } from "@/pages/UnauthorizedPage.tsx";
+import { NotFoundPage } from "@/pages/NotFoundPage.tsx";
 import AppLayout from "@/components/AppLayout.tsx";
 import { PublicLayout } from "@/components/PublicLayout.tsx";
-import { LoginPage } from "@/pages/LoginPage/LoginPage.tsx";
-import { InventoryPage } from "@/pages/InventoryPage/InventoryPage.tsx";
-import { SalePage } from "@/pages/SalePage/SalePage.tsx";
-import { PurchasePage } from "@/pages/PurchasePage/PurchasePage.tsx";
-import { InvoicePage } from "@/pages/InvoicePage/InvoicePage.tsx";
-import { DeptPage } from "@/pages/DeptPage/DeptPage.tsx";
-import { CustomerPage } from "@/pages/CustomerPage/CustomerPage.tsx";
-import { ProductsPage } from "@/pages/ProductsPage/ProductsPage.tsx";
-import { ReturnPage } from "@/pages/ReturnPage/ReturnPage.tsx";
-import { MissingPage } from "@/pages/MissingPage/MissingPage.tsx";
-import { EmployeePage } from "@/pages/EmployeePage/EmployeePage.tsx";
-import { CompanyPage } from "@/pages/CompanyPage/CompanyPage.tsx";
-import { UnitPage } from "@/pages/UnitPage/UnitPage.tsx";
+import { LoginPage } from "@/pages/LoginPage.tsx";
+import { InventoryPage } from "@/pages/InventoryPage.tsx";
+import { SalePage } from "@/pages/SalePage.tsx";
+import { PurchasePage } from "@/pages/PurchasePage.tsx";
+import { InvoicePage } from "@/pages/InvoicePage.tsx";
+import { DeptPage } from "@/pages/DeptPage.tsx";
+import { CustomerPage } from "@/pages/CustomerPage.tsx";
+import { ProductsPage } from "@/pages/ProductsPage.tsx";
+import { ReturnPage } from "@/pages/ReturnPage.tsx";
+import { MissingPage } from "@/pages/MissingPage.tsx";
+import { EmployeePage } from "@/pages/EmployeePage.tsx";
+import { CompanyPage } from "@/pages/CompanyPage.tsx";
+import { UnitPage } from "@/pages/UnitPage.tsx";
 
 const useAuth = () => {
   const isAuthenticated = true;
