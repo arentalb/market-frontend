@@ -17,7 +17,7 @@ import {
   Ungroup,
   Users,
 } from "lucide-react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { getUser } from "@/features/auth/authSlice.ts";
 import { useSelector } from "react-redux";
 
@@ -46,7 +46,6 @@ export default function AppLayout() {
       href: "/customers",
       icon: <Users className="h-5 w-5" />,
     },
-
     {
       name: "بەرهەمەکان",
       href: "/products",
@@ -76,25 +75,30 @@ export default function AppLayout() {
   ];
 
   const user = useSelector(getUser);
+
   return (
     <div className="flex h-screen w-full">
       <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
         <div className="flex h-full flex-col justify-between py-6 px-4">
           <div className="space-y-6">
-            <a href="#" className="flex items-center gap-2 font-bold">
+            <Link
+              to="/app/dashboard"
+              className="flex items-center gap-2 font-bold"
+            >
               <Store className="h-8 w-8" />
               <span className="text-lg">مارکێتی فۆرێڤەر </span>
-            </a>
+            </Link>
+
             <nav className="space-y-1">
               {links.map((link) => (
-                <a
-                  href={"/app" + link.href}
+                <Link
+                  to={"/app" + link.href}
                   key={link.name}
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
                 >
                   {link.icon}
                   <span className="ml-2">{link.name}</span>
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -102,17 +106,21 @@ export default function AppLayout() {
             <Button variant="destructive" size="sm" className="w-full">
               دەرچون
             </Button>
-            <p className={"text-xs"}>{user?.name}</p>
+            <p className="text-xs">{user?.name}</p>
           </div>
         </div>
       </div>
+
       <div className="flex-1">
         <header className="sticky top-0 z-10 border-b bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 lg:hidden">
           <div className="flex items-center justify-between">
-            <a href="#" className="flex items-center gap-2 font-bold">
+            <Link
+              to="/app/dashboard"
+              className="flex items-center gap-2 font-bold"
+            >
               <Store className="h-8 w-8" />
               <span className="text-lg">مارکێتی فۆرێڤەر </span>
-            </a>
+            </Link>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -125,16 +133,16 @@ export default function AppLayout() {
                   <div className="space-y-6">
                     <nav className="space-y-1">
                       {links.map((link) => (
-                        <a
-                          href={link.href}
+                        <Link
+                          to={"/app" + link.href}
                           key={link.name}
-                          className="flex items-center gap-2 rounded-md  py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                          className="flex items-center gap-2 rounded-md py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
                         >
                           {link.icon}
                           <span className="ml-2">{link.name}</span>
-                        </a>
+                        </Link>
                       ))}
-                    </nav>{" "}
+                    </nav>
                   </div>
                   <div className="space-y-4">
                     <Button variant="destructive" size="sm" className="w-full">
@@ -146,6 +154,7 @@ export default function AppLayout() {
             </Sheet>
           </div>
         </header>
+
         <main className="p-4 lg:p-8">
           <Outlet />
         </main>
