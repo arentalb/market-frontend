@@ -33,3 +33,7 @@ export function getServerError(error: unknown): {
     timestamp: new Date().toDateString(),
   };
 }
+export const kurdishNumberFormatter = new Intl.NumberFormat("ar-EG", {
+  numberingSystem: "arab",
+  useGrouping: false,
+});

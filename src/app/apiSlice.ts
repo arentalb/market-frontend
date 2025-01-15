@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { ProductTag, UnitTag, UserTag } from "@/constants/tags.ts";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL || "",
@@ -8,7 +9,7 @@ const baseQuery = fetchBaseQuery({
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQuery,
-  tagTypes: ["User", "Product"],
+  tagTypes: [UserTag, ProductTag, UnitTag],
   endpoints: () => ({}),
 });
 

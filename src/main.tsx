@@ -5,12 +5,15 @@ import App from "./app/App.tsx";
 import { Provider } from "react-redux";
 import store from "./app/store.ts";
 import { Toaster } from "@/components/ui/toaster";
+import { DirectionProvider } from "@radix-ui/react-direction";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <App />
-      <Toaster />
-    </Provider>
+    <DirectionProvider dir="rtl">
+      <Provider store={store}>
+        <App />
+        <Toaster />
+      </Provider>
+    </DirectionProvider>
   </StrictMode>,
 );
