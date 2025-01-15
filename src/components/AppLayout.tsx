@@ -78,15 +78,16 @@ export default function AppLayout() {
 
   return (
     <div className="flex h-screen w-full">
-      <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
-        <div className="flex h-full flex-col justify-between py-6 px-4">
+      {/* Sidebar */}
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
+        <div className="flex flex-1 flex-col justify-between py-6 px-4">
           <div className="space-y-6">
             <Link
               to="/app/dashboard"
               className="flex items-center gap-2 font-bold"
             >
               <Store className="h-8 w-8" />
-              <span className="text-lg">مارکێتی فۆرێڤەر </span>
+              <span className="text-lg">مارکێتی فۆرێڤەر</span>
             </Link>
 
             <nav className="space-y-1">
@@ -111,7 +112,9 @@ export default function AppLayout() {
         </div>
       </div>
 
-      <div className="flex-1">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
         <header className="sticky top-0 z-10 border-b bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900 lg:hidden">
           <div className="flex items-center justify-between">
             <Link
@@ -119,7 +122,7 @@ export default function AppLayout() {
               className="flex items-center gap-2 font-bold"
             >
               <Store className="h-8 w-8" />
-              <span className="text-lg">مارکێتی فۆرێڤەر </span>
+              <span className="text-lg">مارکێتی فۆرێڤەر</span>
             </Link>
             <Sheet>
               <SheetTrigger asChild>
@@ -155,7 +158,8 @@ export default function AppLayout() {
           </div>
         </header>
 
-        <main className="p-4 lg:p-8">
+        {/* Scrollable Main Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-gray-50 dark:bg-gray-900">
           <Outlet />
         </main>
       </div>
