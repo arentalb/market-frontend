@@ -1,8 +1,12 @@
 import apiSlice from "../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
-import { User } from "@/features/auth/auth.types.ts";
-import { CreateUnitPayload, Unit } from "@/features/unit/unit.types.ts";
-import { UnitTag } from "@/constants/tags.ts";
+import {
+  CreateUnitConversionPayload,
+  CreateUnitPayload,
+  Unit,
+  UnitConversion,
+} from "@/features/unit/unit.types.ts";
+import { UnitConversionTag, UnitTag } from "@/constants/tags.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +18,7 @@ const unitSlice = apiSlice.injectEndpoints({
       providesTags: [UnitTag],
     }),
     createUnit: builder.mutation<
-      ApiResponse<{ user: User }>,
+      ApiResponse<{ unit: Unit }>,
       CreateUnitPayload
     >({
       query: (data) => ({
@@ -24,8 +28,35 @@ const unitSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [UnitTag],
     }),
+    getUnitConversions: builder.query<
+      ApiResponse<{ conversions: UnitConversion[] }>,
+      void
+    >({
+      query: () => ({
+        url: `conversions`,
+        method: "GET",
+      }),
+      providesTags: [UnitConversionTag],
+    }),
+
+    createUnitConversion: builder.mutation<
+      ApiResponse<{ conversion: UnitConversion }>,
+      CreateUnitConversionPayload
+    >({
+      query: (data) => ({
+        url: `conversions`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [UnitConversionTag],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetUnitsQuery, useCreateUnitMutation } = unitSlice;
+export const {
+  useGetUnitsQuery,
+  useCreateUnitMutation,
+  useGetUnitConversionsQuery,
+  useCreateUnitConversionMutation,
+} = unitSlice;

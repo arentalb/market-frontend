@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import { kurdishNumberFormatter } from "@/lib/utils.ts";
+import { kurdishNumberFormatter } from "@/lib/utils.tsx";
 import { Unit } from "@/features/unit/unit.types.ts";
 
 type UnitTableProps = {
