@@ -9,14 +9,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { UnitConversionForm } from "@/features/unit/components/UnitConversionForm.tsx";
+import { useState } from "react";
 
 type UnitDialogProps = {
   conversions: UnitConversion[];
 };
 export function CreateUnitConversionDialog({ conversions }: UnitDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div dir="ltr" className="flex justify-end text-right">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button> پەیوەندی دروست بکە</Button>
         </DialogTrigger>
@@ -33,7 +39,10 @@ export function CreateUnitConversionDialog({ conversions }: UnitDialogProps) {
               پێشتر.
             </DialogDescription>
           </DialogHeader>
-          <UnitConversionForm conversions={conversions || []} />
+          <UnitConversionForm
+            conversions={conversions || []}
+            onClose={handleClose}
+          />
         </DialogContent>
       </Dialog>
     </div>

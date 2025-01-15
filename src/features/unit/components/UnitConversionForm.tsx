@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast.ts";
 
 type UnitConversionFormProps = {
   conversions: UnitConversion[];
+  onClose: () => void;
 };
 
 type FormValues = {
@@ -41,7 +42,10 @@ const unitConversionSchema = z.object({
     }),
 });
 
-export function UnitConversionForm({ conversions }: UnitConversionFormProps) {
+export function UnitConversionForm({
+  conversions,
+  onClose,
+}: UnitConversionFormProps) {
   const { data } = useGetUnitsQuery();
   const units = data?.data.units || [];
   const [createUnitConversion, { isLoading }] =
@@ -104,6 +108,7 @@ export function UnitConversionForm({ conversions }: UnitConversionFormProps) {
       toast({
         title: "سەرکەوتوو بوو",
       });
+      onClose();
     } catch (err) {
       console.error(err);
       toast({

@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button.tsx";
 
 type UnitFormProps = {
   units: Unit[];
+  onClose: () => void;
 };
-export function UnitForm({ units }: UnitFormProps) {
+export function UnitForm({ units, onClose }: UnitFormProps) {
   const {
     handleSubmit,
     control,
@@ -51,6 +52,7 @@ export function UnitForm({ units }: UnitFormProps) {
         title: "سەرکەوتوو بوو",
       });
       reset();
+      onClose();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       toast({

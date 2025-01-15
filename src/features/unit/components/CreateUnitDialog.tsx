@@ -9,14 +9,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useState } from "react";
 
 type UnitDialogProps = {
   units: Unit[];
 };
 export function CreateUnitDialog({ units }: UnitDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div dir="ltr" className="flex justify-end text-right">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>یەکە دروست بکە</Button>
         </DialogTrigger>
@@ -30,7 +37,7 @@ export function CreateUnitDialog({ units }: UnitDialogProps) {
               دڵنیابەرەوە ئەو یەکەیەی ئەتەوێت دروستی بکەیت دروستنەکراوە پێشتر.
             </DialogDescription>
           </DialogHeader>
-          <UnitForm units={units || []} />
+          <UnitForm units={units || []} onClose={handleClose} />
         </DialogContent>
       </Dialog>
     </div>
