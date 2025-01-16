@@ -14,100 +14,81 @@ import {
 } from "@/components/ui/select.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast.ts";
 import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
+import {
+  createUnitConversionSchema,
+  createUnitConversionSchemaType,
+} from "@/features/unit/forms/schemas.ts";
 
 type UnitConversionFormProps = {
   conversions: UnitConversion[];
   onClose: () => void;
 };
 
-type FormValues = {
-  fromUnit: string;
-  toUnit: string;
-  ratio: string;
-};
-
-const unitConversionSchema = z.object({
-  fromUnit: z.string().nonempty("یەکەی یەکەم دیاری بکە"),
-  toUnit: z.string().nonempty("یەکەی دووەم دیاری بکە"),
-  ratio: z
-    .string()
-    .nonempty("ڕێژە دیاری بکە")
-    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
-      message: "تکایە ڕێژەی ١ یان سەروو ١ بنوسە",
-    }),
-});
-
 export function UnitConversionForm({
   conversions,
   onClose,
 }: UnitConversionFormProps) {
-  const { data } = useGetUnitsQuery();
-  const units = data?.data.units || [];
+  const { data: unitsData } = useGetUnitsQuery();
+  const units = unitsData?.data.units || [];
+
   const [createUnitConversion, { isLoading }] =
     useCreateUnitConversionMutation();
 
   const { toast } = useToast();
 
   const {
-    control,
     handleSubmit,
     watch,
     setError,
     reset,
+    setValue,
+    register,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(unitConversionSchema),
+  } = useForm<createUnitConversionSchemaType>({
+    resolver: zodResolver(createUnitConversionSchema),
     defaultValues: {
-      ratio: "1",
-      fromUnit: "",
-      toUnit: "",
+      fromUnitId: -1,
+      toUnitId: -1,
+      conversionRate: 1,
     },
   });
 
-  const fromUnit = watch("fromUnit");
-  const toUnit = watch("toUnit");
-  const onSubmit = (data: FormValues) => {
-    const selectedFromUnit = parseInt(data.fromUnit, 10);
-    const selectedToUnit = parseInt(data.toUnit, 10);
-    const ratioNumber = parseFloat(data.ratio);
+  const { fromUnitId, toUnitId, conversionRate } = watch();
+
+  const onSubmit = async (formData: createUnitConversionSchemaType) => {
+    const { fromUnitId, toUnitId, conversionRate } = formData;
 
     const conversionExists = conversions.some((conversion) => {
-      const toUnitId = conversion.fromUnit.id;
-      const fromUnitId = conversion.toUnit.id;
+      const existingFrom = conversion.fromUnit.id;
+      const existingTo = conversion.toUnit.id;
+
       return (
-        (selectedFromUnit === fromUnitId && selectedToUnit === toUnitId) ||
-        (selectedFromUnit === toUnitId && selectedToUnit === fromUnitId)
+        (fromUnitId === existingTo && toUnitId === existingFrom) ||
+        (fromUnitId === existingFrom && toUnitId === existingTo)
       );
     });
 
     if (conversionExists) {
-      setError("toUnit", {
+      setError("toUnitId", {
         type: "manual",
         message: "ئەم پەیوەندی هەیە",
       });
       return;
     }
 
-    console.log("Submitting:", {
-      selectedFromUnit,
-      selectedToUnit,
-      ratio: ratioNumber,
-    });
-
     try {
-      createUnitConversion({
-        fromUnitId: selectedFromUnit,
-        toUnitId: selectedToUnit,
-        conversionRate: ratioNumber,
+      await createUnitConversion({
+        fromUnitId,
+        toUnitId,
+        conversionRate: conversionRate,
       }).unwrap();
-      toast({
-        title: "سەرکەوتوو بوو",
-      });
+
+      toast({ title: "سەرکەوتوو بوو" });
+      reset();
       onClose();
     } catch (err) {
       console.error(err);
@@ -116,8 +97,10 @@ export function UnitConversionForm({
         variant: "destructive",
       });
     }
-    reset();
   };
+
+  const fromUnitObj = units.find((u) => u.id === Number(fromUnitId));
+  const toUnitObj = units.find((u) => u.id === Number(toUnitId));
 
   return (
     <form
@@ -125,90 +108,84 @@ export function UnitConversionForm({
       className="p-2 flex flex-col gap-4 max-w-sm"
     >
       <div className="flex gap-4">
-        <Controller
-          name="fromUnit"
-          control={control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="لە یەکەی " />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>یەکە</SelectLabel>
-                  {units.map((unit) =>
-                    unit.id.toString() !== watch("toUnit") ? (
-                      <SelectItem key={unit.id} value={unit.id.toString()}>
-                        {unit.unitSymbol}
-                      </SelectItem>
-                    ) : null,
-                  )}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          value={fromUnitId === -1 ? undefined : fromUnitId.toString()}
+          onValueChange={(value) => {
+            setValue("fromUnitId", Number(value), { shouldValidate: true });
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="لە یەکەی " />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>یەکە</SelectLabel>
+              {units.map((unit) =>
+                unit.id !== toUnitId ? (
+                  <SelectItem key={unit.id} value={unit.id.toString()}>
+                    {unit.unitSymbol}
+                  </SelectItem>
+                ) : null,
+              )}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <Controller
-          name="toUnit"
-          control={control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="بۆ یەکەی " />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>یەکە</SelectLabel>
-                  {units.map((unit) =>
-                    unit.id.toString() !== watch("fromUnit") ? (
-                      <SelectItem key={unit.id} value={unit.id.toString()}>
-                        {unit.unitSymbol}
-                      </SelectItem>
-                    ) : null,
-                  )}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+        <Select
+          value={toUnitId === -1 ? undefined : toUnitId.toString()}
+          onValueChange={(value) => {
+            setValue("toUnitId", Number(value), { shouldValidate: true });
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="بۆ یەکەی " />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>یەکە</SelectLabel>
+              {units.map((unit) =>
+                unit.id !== fromUnitId ? (
+                  <SelectItem key={unit.id} value={unit.id.toString()}>
+                    {unit.unitSymbol}
+                  </SelectItem>
+                ) : null,
+              )}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <Controller
-          name="ratio"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type="text"
-              placeholder="ڕێژە"
-              className="w-full"
-            />
-          )}
+        <Input
+          {...register("conversionRate")}
+          type="number"
+          placeholder="ڕێژە"
+          className="w-full"
         />
       </div>
-      <div className={"gap-2"}>
-        {errors.fromUnit && (
-          <p className="text-red-500 text-sm">{errors.fromUnit.message}</p>
-        )}
-        {errors.toUnit && (
-          <p className="text-red-500 text-sm">{errors.toUnit.message}</p>
-        )}
 
-        {errors.ratio && (
-          <p className="text-red-500 text-sm">{errors.ratio.message}</p>
+      <div className="gap-2">
+        {errors.fromUnitId && (
+          <p className="text-red-500 text-sm">{errors.fromUnitId.message}</p>
+        )}
+        {errors.toUnitId && (
+          <p className="text-red-500 text-sm">{errors.toUnitId.message}</p>
+        )}
+        {errors.conversionRate && (
+          <p className="text-red-500 text-sm">
+            {errors.conversionRate.message}
+          </p>
         )}
       </div>
-      {fromUnit && toUnit && control.getFieldState("ratio") && (
+
+      {fromUnitId !== -1 && toUnitId !== -1 && conversionRate && (
         <p>
           {unitConversionDetailFormater(
-            units.find((u) => u.id.toString() === fromUnit)?.unitSymbol || "",
-            units.find((u) => u.id.toString() === toUnit)?.unitSymbol || "",
-            watch("ratio"),
+            fromUnitObj?.unitSymbol || "",
+            toUnitObj?.unitSymbol || "",
+            conversionRate.toString(),
           )}
         </p>
       )}
 
-      {/* Submit Button */}
       <Button type="submit">
         {isLoading ? "درستکردن ..." : "دروستکردنی پەیوەندی"}
       </Button>

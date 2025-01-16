@@ -1,12 +1,12 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import {
-  CreateUnitConversionPayload,
   CreateUnitPayload,
   Unit,
   UnitConversion,
 } from "@/features/unit/types/unit.types.ts";
 import { UnitConversionTag, UnitTag } from "@/constants/tags.ts";
+import { createUnitConversionSchemaType } from "@/features/unit/forms/schemas.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,7 +41,7 @@ const unitSlice = apiSlice.injectEndpoints({
 
     createUnitConversion: builder.mutation<
       ApiResponse<{ conversion: UnitConversion }>,
-      CreateUnitConversionPayload
+      createUnitConversionSchemaType
     >({
       query: (data) => ({
         url: `conversions`,
