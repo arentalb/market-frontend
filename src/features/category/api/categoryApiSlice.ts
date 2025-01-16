@@ -1,10 +1,8 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import { CategoryTag } from "@/constants/tags.ts";
-import {
-  Category,
-  CreateCategoryPayload,
-} from "@/features/category/types/category.types.ts";
+import { Category } from "@/features/category/types/category.types.ts";
+import { createCategorySchemaType } from "@/features/category/forms/schema.ts";
 
 const categorySlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -19,7 +17,7 @@ const categorySlice = apiSlice.injectEndpoints({
     ),
     createCategory: builder.mutation<
       ApiResponse<{ category: Category }>,
-      CreateCategoryPayload
+      createCategorySchemaType
     >({
       query: (data) => ({
         url: `categories`,

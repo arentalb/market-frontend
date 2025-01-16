@@ -4,7 +4,3 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface CreateCategoryPayload {
-  name: string;
-}

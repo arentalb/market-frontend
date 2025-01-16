@@ -1,15 +1,15 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Category,
-  CreateCategoryPayload,
-} from "@/features/category/types/category.types";
+import { Category } from "@/features/category/types/category.types";
 import { useCreateCategoryMutation } from "@/features/category/api/categoryApiSlice";
+import {
+  createCategorySchema,
+  createCategorySchemaType,
+} from "@/features/category/forms/schema.ts";
 
 type CategoryFormProps = {
   categories: Category[];
@@ -17,39 +17,27 @@ type CategoryFormProps = {
 };
 
 export function CategoryForm({ categories, onClose }: CategoryFormProps) {
-  const categorySchema = z.object({
-    name: z
-      .string()
-      .min(1, "ناوی جۆرەکە بنوسە")
-      .refine(
-        (value) => {
-          const alreadyExists = categories.some(
-            (c) => c.name.toLowerCase() === value.toLowerCase(),
-          );
-          return !alreadyExists;
-        },
-        { message: "ئەم جۆرە دروستکراوە" },
-      ),
-  });
+  const categorySchema = createCategorySchema(categories);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateCategoryPayload>({
+  } = useForm<createCategorySchemaType>({
     resolver: zodResolver(categorySchema),
   });
 
   const [createCategory, { isLoading }] = useCreateCategoryMutation();
   const { toast } = useToast();
 
-  const onSubmit: SubmitHandler<CreateCategoryPayload> = async (data) => {
+  const onSubmit: SubmitHandler<createCategorySchemaType> = async (data) => {
     try {
       await createCategory(data).unwrap();
       toast({ title: "سەرکەوتوو بوو" });
       reset();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       toast({
         title: "هەڵە",
