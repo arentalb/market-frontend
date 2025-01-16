@@ -18,7 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast.ts";
-import { unitConversionDetailFormater } from "@/features/unit/utils/utils.tsx";
+import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
 
 type UnitConversionFormProps = {
   conversions: UnitConversion[];

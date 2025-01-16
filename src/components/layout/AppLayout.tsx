@@ -48,7 +48,7 @@ export default function AppLayout() {
       icon: <Users className="h-5 w-5" />,
     },
     {
-      name: "بەرهەمەکان",
+      name: "کاڵاکان",
       href: "/products",
       icon: <Package className="h-5 w-5" />,
     },

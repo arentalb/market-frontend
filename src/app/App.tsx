@@ -17,8 +17,8 @@ import { InvoicePage } from "@/features/invoice/pages/InvoicePage.tsx";
 import { DeptPage } from "@/features/dept/pages/DeptPage.tsx";
 import { CustomerPage } from "@/features/customer/pages/CustomerPage.tsx";
 import { ProductsPage } from "@/features/product/pages/ProductsPage.tsx";
-import { ReturnPage } from "@/features/product/pages/ReturnPage.tsx";
-import { MissingPage } from "@/features/product/pages/MissingPage.tsx";
+import { ReturnedProductsPage } from "@/features/product/pages/ReturnedProductsPage.tsx";
+import { MissingProductsPage } from "@/features/product/pages/MissingProductsPage.tsx";
 import { EmployeePage } from "@/features/employee/pages/EmployeePage.tsx";
 import { CompanyPage } from "@/features/company/pages/CompanyPage.tsx";
 import { UnitPage } from "@/features/unit/pages/UnitPage.tsx";
@@ -108,11 +108,11 @@ const router = createBrowserRouter([
           },
           {
             path: "returns",
-            children: [{ index: true, element: <ReturnPage /> }],
+            children: [{ index: true, element: <ReturnedProductsPage /> }],
           },
           {
             path: "missing",
-            children: [{ index: true, element: <MissingPage /> }],
+            children: [{ index: true, element: <MissingProductsPage /> }],
           },
           {
             path: "employees",
