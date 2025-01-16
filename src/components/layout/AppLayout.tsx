@@ -4,6 +4,7 @@ import {
   AlertCircle,
   Box,
   Building,
+  ChartBarStacked,
   Contact,
   Ellipsis,
   FileText,
@@ -72,6 +73,11 @@ export default function AppLayout() {
       icon: <Building className="h-5 w-5" />,
     },
     { name: "یەکەکان", href: "/units", icon: <Ungroup className="h-5 w-5" /> },
+    {
+      name: "جۆرەکان",
+      href: "/categories",
+      icon: <ChartBarStacked className="h-5 w-5" />,
+    },
   ];
 
   const user = useSelector(getUser);
