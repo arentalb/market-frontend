@@ -10,10 +10,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  LoginFormInputs,
-  loginSchema,
-} from "@/features/auth/forms/loginSchema.ts";
+import { loginSchema, loginSchemaType } from "@/features/auth/forms/schemas.ts";
 import {
   Form,
   FormControl,
@@ -30,7 +27,7 @@ import { setCredentials } from "@/features/auth/store/authSlice.ts";
 import { UserRoles } from "@/constants/userRoles.ts";
 
 export default function LoginForm() {
-  const form = useForm<LoginFormInputs>({
+  const form = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -43,7 +40,7 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
-  async function onSubmit(inputs: LoginFormInputs) {
+  async function onSubmit(inputs: loginSchemaType) {
     try {
       const response = await login({
         email: inputs.email,
@@ -51,7 +48,7 @@ export default function LoginForm() {
       }).unwrap();
 
       toast({
-        title: `Welcome ${response.data.user.name}`,
+        title: ` ${response.data.user.name} بەخێربێیت `,
       });
       dispatch(setCredentials(response.data.user));
       if (response.data.user.role === UserRoles.Owner) {

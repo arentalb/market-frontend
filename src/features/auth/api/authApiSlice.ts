@@ -1,14 +1,11 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
-import {
-  LoginRequest,
-  RegisterRequest,
-  User,
-} from "@/features/auth/types/auth.types.ts";
+import { User } from "@/features/auth/types/auth.types.ts";
+import { loginSchemaType } from "@/features/auth/forms/schemas.ts";
 
 const authSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<ApiResponse<{ user: User }>, LoginRequest>({
+    login: builder.mutation<ApiResponse<{ user: User }>, loginSchemaType>({
       query: (data) => ({
         url: `auth/sign-in`,
         method: "POST",
@@ -21,16 +18,8 @@ const authSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
-    register: builder.mutation<ApiResponse<string>, RegisterRequest>({
-      query: (data) => ({
-        url: `auth/sign-up`,
-        method: "POST",
-        body: data,
-      }),
-    }),
   }),
   overrideExisting: true,
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
-  authSlice;
+export const { useLoginMutation, useLogoutMutation } = authSlice;

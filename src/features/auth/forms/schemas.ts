@@ -7,4 +7,4 @@ export const loginSchema = z.object({
     .min(6, "وشەی نهێنی نابێت کەمتر لە 6 نووسە بێت")
     .nonempty("وشەی نهێنی پێویستە"),
 });
-export type LoginFormInputs = z.infer<typeof loginSchema>;
+export type loginSchemaType = z.infer<typeof loginSchema>;
