@@ -2,7 +2,7 @@ import { PageHeader } from "@/components/common/PageHeader.tsx";
 import {
   useGetUnitConversionsQuery,
   useGetUnitsQuery,
-} from "@/features/unit/unitApiSlice.ts";
+} from "@/features/unit/api/unitApiSlice.ts";
 import { CreateUnitDialog } from "@/features/unit/components/CreateUnitDialog.tsx";
 import { UnitTable } from "@/features/unit/components/UnitTable.tsx";
 import { CreateUnitConversionDialog } from "@/features/unit/components/CreateUnitConversionDialog.tsx";

@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { Unit } from "@/features/unit/unit.types.ts";
+import { Unit } from "@/features/unit/types/unit.types.ts";
 
 type UnitTableProps = {
   units: Unit[];

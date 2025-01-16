@@ -7,11 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import {
-  kurdishNumberFormatter,
-  unitConversionDetailFormater,
-} from "@/lib/utils.tsx";
-import { UnitConversion } from "@/features/unit/unit.types.ts";
+import { kurdishNumberFormatter } from "@/lib/utils.tsx";
+import { UnitConversion } from "@/features/unit/types/unit.types.ts";
+import { unitConversionDetailFormater } from "@/features/unit/utils/utils.tsx";
 
 type UnitTableProps = {
   conversions: UnitConversion[];

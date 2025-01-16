@@ -1,4 +1,4 @@
-import { Unit } from "@/features/unit/unit.types.ts";
+import { Unit } from "@/features/unit/types/unit.types.ts";
 
 export function UnitItem({ unit }: { unit: Unit }) {
   return (

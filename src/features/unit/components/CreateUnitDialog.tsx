@@ -1,5 +1,5 @@
-import { UnitForm } from "@/features/unit/components/UnitForm.tsx";
-import { Unit } from "@/features/unit/unit.types.ts";
+import { UnitForm } from "@/features/unit/forms/UnitForm.tsx";
+import { Unit } from "@/features/unit/types/unit.types.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Dialog,

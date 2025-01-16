@@ -1,11 +1,11 @@
-import apiSlice from "../../app/apiSlice.ts";
+import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import {
   CreateUnitConversionPayload,
   CreateUnitPayload,
   Unit,
   UnitConversion,
-} from "@/features/unit/unit.types.ts";
+} from "@/features/unit/types/unit.types.ts";
 import { UnitConversionTag, UnitTag } from "@/constants/tags.ts";
 
 const unitSlice = apiSlice.injectEndpoints({

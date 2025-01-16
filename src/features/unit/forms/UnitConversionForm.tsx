@@ -1,8 +1,8 @@
-import { UnitConversion } from "@/features/unit/unit.types.ts";
+import { UnitConversion } from "@/features/unit/types/unit.types.ts";
 import {
   useCreateUnitConversionMutation,
   useGetUnitsQuery,
-} from "@/features/unit/unitApiSlice.ts";
+} from "@/features/unit/api/unitApiSlice.ts";
 import {
   Select,
   SelectContent,
@@ -11,14 +11,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Controller, useForm } from "react-hook-form";
-import { unitConversionDetailFormater } from "@/lib/utils.tsx";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast.ts";
+import { unitConversionDetailFormater } from "@/features/unit/utils/utils.tsx";
 
 type UnitConversionFormProps = {
   conversions: UnitConversion[];

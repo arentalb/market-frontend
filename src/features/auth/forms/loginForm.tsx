@@ -22,12 +22,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form.tsx";
-import { useLoginMutation } from "@/features/auth/authApiSlice.ts";
+import { useLoginMutation } from "@/features/auth/api/authApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "@/features/auth/authSlice.ts";
-import { UserRoles } from "@/features/auth/userRoles.ts";
+import { setCredentials } from "@/features/auth/store/authSlice.ts";
+import { UserRoles } from "@/constants/userRoles.ts";
 
 export default function LoginForm() {
   const form = useForm<LoginFormInputs>({

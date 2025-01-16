@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button.tsx";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx";
 import {
   AlertCircle,
   Box,
@@ -18,7 +18,7 @@ import {
   Users,
 } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
-import { getUser } from "@/features/auth/authSlice.ts";
+import { getUser } from "@/features/auth/store/authSlice.ts";
 import { useSelector } from "react-redux";
 
 export default function AppLayout() {

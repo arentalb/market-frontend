@@ -1,4 +1,4 @@
-import { UnitConversion } from "@/features/unit/unit.types.ts";
+import { UnitConversion } from "@/features/unit/types/unit.types.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Dialog,
@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { UnitConversionForm } from "@/features/unit/components/UnitConversionForm.tsx";
+import { UnitConversionForm } from "@/features/unit/forms/UnitConversionForm.tsx";
 import { useState } from "react";
 
 type UnitDialogProps = {

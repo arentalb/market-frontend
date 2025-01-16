@@ -4,27 +4,27 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import DashboardPage from "@/pages/DashboardPage.tsx";
-import { UnauthorizedPage } from "@/pages/UnauthorizedPage.tsx";
-import { NotFoundPage } from "@/pages/NotFoundPage.tsx";
-import AppLayout from "@/components/AppLayout.tsx";
-import { PublicLayout } from "@/components/PublicLayout.tsx";
-import { LoginPage } from "@/pages/LoginPage.tsx";
-import { InventoryPage } from "@/pages/InventoryPage.tsx";
-import { SalePage } from "@/pages/SalePage.tsx";
-import { PurchasePage } from "@/pages/PurchasePage.tsx";
-import { InvoicePage } from "@/pages/InvoicePage.tsx";
-import { DeptPage } from "@/pages/DeptPage.tsx";
-import { CustomerPage } from "@/pages/CustomerPage.tsx";
-import { ProductsPage } from "@/pages/ProductsPage.tsx";
-import { ReturnPage } from "@/pages/ReturnPage.tsx";
-import { MissingPage } from "@/pages/MissingPage.tsx";
-import { EmployeePage } from "@/pages/EmployeePage.tsx";
-import { CompanyPage } from "@/pages/CompanyPage.tsx";
-import { UnitPage } from "@/pages/UnitPage.tsx";
+import DashboardPage from "@/features/dashboard/pages/DashboardPage.tsx";
+import { UnauthorizedPage } from "@/features/common/pages/UnauthorizedPage.tsx";
+import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
+import AppLayout from "@/components/layout/AppLayout.tsx";
+import { PublicLayout } from "@/components/layout/PublicLayout.tsx";
+import { LoginPage } from "@/features/auth/pages/LoginPage.tsx";
+import { InventoryPage } from "@/features/inventory/pages/InventoryPage.tsx";
+import { SalePage } from "@/features/sale/pages/SalePage.tsx";
+import { PurchasePage } from "@/features/purchase/pages/PurchasePage.tsx";
+import { InvoicePage } from "@/features/invoice/pages/InvoicePage.tsx";
+import { DeptPage } from "@/features/dept/pages/DeptPage.tsx";
+import { CustomerPage } from "@/features/customer/pages/CustomerPage.tsx";
+import { ProductsPage } from "@/features/product/pages/ProductsPage.tsx";
+import { ReturnPage } from "@/features/product/pages/ReturnPage.tsx";
+import { MissingPage } from "@/features/product/pages/MissingPage.tsx";
+import { EmployeePage } from "@/features/employee/pages/EmployeePage.tsx";
+import { CompanyPage } from "@/features/company/pages/CompanyPage.tsx";
+import { UnitPage } from "@/features/unit/pages/UnitPage.tsx";
 import { useSelector } from "react-redux";
-import { getUser } from "@/features/auth/authSlice.ts";
-import { UserRoles } from "@/features/auth/userRoles.ts";
+import { getUser } from "@/features/auth/store/authSlice.ts";
+import { UserRoles } from "@/constants/userRoles.ts";
 
 const PrivateRoute = ({ allowedRoles }: { allowedRoles?: string[] }) => {
   const user = useSelector(getUser);

@@ -1,10 +1,10 @@
-import apiSlice from "../../app/apiSlice.ts";
+import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import {
   LoginRequest,
   RegisterRequest,
   User,
-} from "@/features/auth/auth.types.ts";
+} from "@/features/auth/types/auth.types.ts";
 
 const authSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
