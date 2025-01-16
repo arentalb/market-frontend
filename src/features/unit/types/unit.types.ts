@@ -6,11 +6,6 @@ export interface Unit {
   updatedAt: string;
 }
 
-export interface CreateUnitPayload {
-  unitName: string;
-  unitSymbol: string;
-}
-
 export interface UnitConversion {
   id: number;
   fromUnitId: number;

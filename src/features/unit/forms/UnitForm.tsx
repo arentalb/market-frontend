@@ -1,11 +1,15 @@
-import { CreateUnitPayload, Unit } from "@/features/unit/types/unit.types.ts";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Unit } from "@/features/unit/types/unit.types.ts";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateUnitMutation } from "@/features/unit/api/unitApiSlice.ts";
-import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast.ts";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  createUnitSchema,
+  createUnitSchemaType,
+} from "@/features/unit/forms/schemas.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type UnitFormProps = {
   units: Unit[];
@@ -14,13 +18,14 @@ type UnitFormProps = {
 export function UnitForm({ units, onClose }: UnitFormProps) {
   const {
     handleSubmit,
-    control,
     watch,
     setError,
     clearErrors,
     reset,
+    register,
     formState: { errors },
-  } = useForm<CreateUnitPayload>({
+  } = useForm<createUnitSchemaType>({
+    resolver: zodResolver(createUnitSchema),
     mode: "onSubmit",
   });
 
@@ -28,7 +33,8 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
 
   const unitSymbol = watch("unitSymbol");
 
-  useEffect(() => {
+  const { toast } = useToast();
+  const onSubmit: SubmitHandler<createUnitSchemaType> = async (data) => {
     if (unitSymbol) {
       const symbolExists = units.some(
         (unit) => unit.unitSymbol.toLowerCase() === unitSymbol.toLowerCase(),
@@ -36,16 +42,13 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
       if (symbolExists) {
         setError("unitSymbol", {
           type: "manual",
-          message: "This symbol is already taken.",
+          message: "ئەم هێمایە پێشتر دروستکراوە",
         });
+        return;
       } else {
         clearErrors("unitSymbol");
       }
     }
-  }, [unitSymbol, units, setError, clearErrors]);
-
-  const { toast } = useToast();
-  const onSubmit: SubmitHandler<CreateUnitPayload> = async (data) => {
     try {
       await createUnit(data).unwrap();
       toast({
@@ -57,7 +60,6 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
     } catch (err) {
       toast({
         title: "هەڵە",
-        // description: err?.data.message,
         variant: "destructive",
       });
     }
@@ -68,25 +70,14 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
       <form
         className="flex flex-col gap-4 max-w-sm"
         onSubmit={handleSubmit(onSubmit)}
-        noValidate
       >
         <div className="flex-1">
           <Label htmlFor="unitName">ناوی یەکە</Label>
-          <Controller
-            name="unitName"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "ناوی یەکەکە بنوسە",
-            }}
-            render={({ field }) => (
-              <Input
-                type="text"
-                id="unitName"
-                {...field}
-                aria-invalid={errors.unitName ? "true" : "false"}
-              />
-            )}
+          <Input
+            type="text"
+            id="unitName"
+            {...register("unitName")}
+            aria-invalid={errors.unitName ? "true" : "false"}
           />
           {errors.unitName && (
             <p className="text-sm text-red-500">{errors.unitName.message}</p>
@@ -95,26 +86,11 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
 
         <div className="flex-1">
           <Label htmlFor="unitSymbol">هێمای یەکە</Label>
-          <Controller
-            name="unitSymbol"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "هێمای یەکەکە بنوسە",
-              validate: (value) =>
-                !units.some(
-                  (unit) =>
-                    unit.unitSymbol.toLowerCase() === value.toLowerCase(),
-                ) || "ئەم هێمایە هەیە تکایە بیگۆڕە",
-            }}
-            render={({ field }) => (
-              <Input
-                type="text"
-                id="unitSymbol"
-                {...field}
-                aria-invalid={errors.unitSymbol ? "true" : "false"}
-              />
-            )}
+          <Input
+            type="text"
+            id="unitSymbol"
+            {...register("unitSymbol")}
+            aria-invalid={errors.unitSymbol ? "true" : "false"}
           />
           {errors.unitSymbol && (
             <p className="text-sm text-red-500">{errors.unitSymbol.message}</p>
