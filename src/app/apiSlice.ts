@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  CategoryTag,
   ProductTag,
   UnitConversionTag,
   UnitTag,
@@ -14,7 +15,7 @@ const baseQuery = fetchBaseQuery({
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQuery,
-  tagTypes: [UserTag, ProductTag, UnitTag, UnitConversionTag],
+  tagTypes: [UserTag, ProductTag, UnitTag, UnitConversionTag, CategoryTag],
   endpoints: () => ({}),
 });
 
