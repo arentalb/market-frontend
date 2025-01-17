@@ -14,9 +14,18 @@ import {
 } from "@/features/product/types/product.types.ts";
 import { useState } from "react";
 import { BookMinus, BookPlus } from "lucide-react";
-import { SetSalePriceDialog } from "@/features/product/components/SetSalePriceDialog.tsx";
+import { ProductSalePriceDialog } from "@/features/product/components/productDetail/ProductSalePriceDialog.tsx";
+import { useDispatch } from "react-redux";
+import {
+  setProductId,
+  setProductUnitId,
+} from "@/features/product/store/productSlice.ts";
 
-export function SalePriceHistoryTable({ product }: { product: ProductDetail }) {
+export function ProductSalePriceHistoryTable({
+  product,
+}: {
+  product: ProductDetail;
+}) {
   return (
     <Table>
       <TableHeader>
@@ -44,15 +53,16 @@ export function SalePriceHistoryTable({ product }: { product: ProductDetail }) {
 
 function UnitRow({
   unit,
-  productId,
   index,
+  productId,
 }: {
   unit: MyUnit;
-  productId: number;
   index: number;
+  productId: number;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const dispatch = useDispatch();
   return (
     <>
       <TableRow>
@@ -75,8 +85,13 @@ function UnitRow({
                 <BookPlus width={18} height={18} />
               )}
             </button>
-            <button>
-              <SetSalePriceDialog productId={productId} unitId={unit.id} />
+            <button
+              onClick={() => {
+                dispatch(setProductId(productId));
+                dispatch(setProductUnitId(unit.id));
+              }}
+            >
+              <ProductSalePriceDialog />
             </button>
           </div>
         </TableCell>

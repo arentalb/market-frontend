@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { useGetProductsQuery } from "@/features/product/api/productApiSlice.ts";
-import { ProductsTable } from "@/features/product/components/ProductsTable.tsx";
-import { CreateProductDialog } from "@/features/product/components/CreateProductDialog.tsx";
+import { ProductsTable } from "@/features/product/components/product/ProductsTable.tsx";
+import { ProductCreateDialog } from "@/features/product/components/product/ProductCreateDialog.tsx";
 
 export function ProductsPage() {
   const { data, isLoading } = useGetProductsQuery();
@@ -10,7 +10,7 @@ export function ProductsPage() {
       <PageHeader title={"کاڵاکان"} />
       <div>
         <div className={"mb-2 flex justify-between items-center"}>
-          <CreateProductDialog />
+          <ProductCreateDialog />
         </div>
 
         {!isLoading && <ProductsTable products={data?.data.products || []} />}

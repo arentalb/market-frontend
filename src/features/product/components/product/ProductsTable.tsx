@@ -13,9 +13,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover.tsx";
 import { ChevronDown } from "lucide-react";
-import { ProductUnitsTable } from "@/features/product/components/ProductUnitsTable.tsx";
+import { ProductUnitsTable } from "@/features/product/components/product/ProductUnitsTable.tsx";
 
 type ProductTableProps = {
   products: Product[];

@@ -1,9 +1,18 @@
+import { Button } from "@/components/ui/button.tsx";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog.tsx";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast.ts";
 import { useCreateProductMutation } from "@/features/product/api/productApiSlice.ts";
 import { useGetUnitsQuery } from "@/features/unit/api/unitApiSlice.ts";
 import { useGetCategoriesQuery } from "@/features/category/api/categoryApiSlice.ts";
@@ -22,14 +31,40 @@ import {
   createProductSchemaType,
 } from "@/features/product/forms/schema.ts";
 
+export function ProductCreateDialog() {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div dir="ltr" className="flex justify-end text-right">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button>کاڵا دروست بکە</Button>
+        </DialogTrigger>
+        <DialogContent
+          showDefaultCloseIcon={true}
+          className="sm:max-w-[425px] text-right"
+        >
+          <DialogHeader className={"mt-2"}>
+            <DialogTitle className={"text-right"}>کاڵا دروست بکە</DialogTitle>
+            <DialogDescription className={"text-right"}>
+              دڵنیابەرەوە ئەو کاڵایەی ئەتەوێت دروستی بکەیت دروستنەکراوە پێشتر.
+            </DialogDescription>
+          </DialogHeader>
+          <ProductForm onClose={handleClose} />
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
 type ProductFormProps = {
   onClose: () => void;
-  selectedProductId: number;
 };
-export function EditProductUnitAndPriceFrom({
-  onClose,
-  selectedProductId,
-}: ProductFormProps) {
+export function ProductForm({ onClose }: ProductFormProps) {
   const {
     register,
     handleSubmit,
