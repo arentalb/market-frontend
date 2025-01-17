@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
-import { Unit } from "@/features/unit/types/unit.types.ts";
+import { ProductUnitsTable } from "@/features/product/components/ProductUnitsTable.tsx";
 
 type ProductTableProps = {
   products: Product[];
@@ -57,37 +57,11 @@ export function ProductsTable({ products }: ProductTableProps) {
                   <PopoverContent>
                     <ProductUnitsTable
                       productUnits={product.productUnits || []}
+                      selectedProductId={product.id}
                     />
                   </PopoverContent>
                 </Popover>
               </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
-}
-
-function ProductUnitsTable({ productUnits }: { productUnits: Unit[] }) {
-  return (
-    <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-right"> #</TableHead>
-            <TableHead className="text-right"> هێمای یەکە</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {productUnits.map((productUnit, index) => (
-            <TableRow key={productUnit.id}>
-              <TableCell className="font-medium">
-                {" "}
-                {kurdishNumberFormatter.format(index + 1)}
-              </TableCell>
-
-              <TableCell>{productUnit.unitSymbol}</TableCell>
             </TableRow>
           ))}
         </TableBody>
