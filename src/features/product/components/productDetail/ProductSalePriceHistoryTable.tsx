@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
 import {
-  MyPrice,
-  MyUnit,
   ProductDetail,
+  ProductDetailUnit,
+  ProductDetailUnitPrice,
 } from "@/features/product/types/product.types.ts";
 import { useState } from "react";
 import { BookMinus, BookPlus } from "lucide-react";
@@ -56,35 +56,48 @@ function UnitRow({
   index,
   productId,
 }: {
-  unit: MyUnit;
+  unit: ProductDetailUnit;
   index: number;
   productId: number;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
   const dispatch = useDispatch();
+
   return (
     <>
       <TableRow>
         <TableCell className="font-medium">
           {kurdishNumberFormatter.format(index + 1)}
         </TableCell>
-        <TableCell>{unit.unitSymbol}</TableCell>
+        <TableCell>{unit.unitSymbol ?? "N/A"}</TableCell>
         <TableCell>
-          {kurdishNumberFormatter.format(Number(unit.activePrice.price))}
+          {unit.activePrice ? (
+            <p>
+              {" "}
+              {kurdishNumberFormatter.format(Number(unit.activePrice.price))}
+            </p>
+          ) : (
+            <p>دیاری نەکراوە</p>
+          )}
         </TableCell>
         <TableCell>
-          {new Date(unit.activePrice.effectiveDate).toLocaleString()}
+          {unit.activePrice ? (
+            <p> {new Date(unit.activePrice.effectiveDate).toLocaleString()}</p>
+          ) : (
+            <p>-</p>
+          )}
         </TableCell>
         <TableCell>
           <div className={"flex gap-2"}>
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? (
-                <BookMinus width={18} height={18} />
-              ) : (
-                <BookPlus width={18} height={18} />
-              )}
-            </button>
+            {unit.activePrice && (
+              <button onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? (
+                  <BookMinus width={18} height={18} />
+                ) : (
+                  <BookPlus width={18} height={18} />
+                )}
+              </button>
+            )}
             <button
               onClick={() => {
                 dispatch(setProductId(productId));
@@ -108,14 +121,21 @@ function UnitRow({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {unit.prices.map((price, subIndex) => (
-                  <PriceRow
-                    key={price.id}
-                    price={price}
-                    active={price.id === unit.activePrice.id}
-                    index={subIndex}
-                  />
-                ))}
+                {unit.prices &&
+                  unit.prices.map((price, subIndex) => (
+                    <PriceRow
+                      key={price.id}
+                      price={
+                        price || {
+                          id: "no-price",
+                          price: "0",
+                          effectiveDate: "",
+                        }
+                      }
+                      active={unit.activePrice?.id === price.id}
+                      index={subIndex}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </TableCell>
@@ -130,7 +150,7 @@ function PriceRow({
   active,
   index,
 }: {
-  price: MyPrice;
+  price: ProductDetailUnitPrice;
   active: boolean;
   index: number;
 }) {
@@ -138,9 +158,13 @@ function PriceRow({
     <TableRow className={active ? "font-bold text-green-600" : ""}>
       <TableCell>{kurdishNumberFormatter.format(index + 1)}</TableCell>
       <TableCell>
-        {kurdishNumberFormatter.format(Number(price.price))}
+        {kurdishNumberFormatter.format(Number(price.price ?? "0"))}
       </TableCell>
-      <TableCell>{new Date(price.effectiveDate).toLocaleString()}</TableCell>
+      <TableCell>
+        {price.effectiveDate
+          ? new Date(price.effectiveDate).toLocaleString()
+          : "-"}
+      </TableCell>
     </TableRow>
   );
 }

@@ -19,18 +19,18 @@ export interface ProductDetail {
   updatedAt: string;
   baseUnit: Unit;
   category: Category;
-  units: MyUnit[];
+  units: ProductDetailUnit[];
 }
-export interface MyUnit {
+export interface ProductDetailUnit {
   id: number;
   unitName: string;
   unitSymbol: string;
   createdAt: string;
   updatedAt: string;
-  prices: MyPrice[];
-  activePrice: MyPrice;
+  prices?: ProductDetailUnitPrice[];
+  activePrice?: ProductDetailUnitPrice;
 }
-export interface MyPrice {
+export interface ProductDetailUnitPrice {
   id: number;
   price: string;
   effectiveDate: string;
