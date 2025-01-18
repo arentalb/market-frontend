@@ -1,14 +1,13 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
-import { ProductTag, ProductUnitAvailable } from "@/constants/tags.ts";
+import { ProductTag } from "@/constants/tags.ts";
 import {
   Product,
   ProductDetail,
 } from "@/features/product/types/product.types.ts";
 import { createProductSchemaType } from "@/features/product/forms/schema.ts";
-import { Unit } from "@/features/unit/types/unit.types.ts";
 
-const unitSlice = apiSlice.injectEndpoints({
+const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<ApiResponse<{ products: Product[] }>, void>({
       query: () => ({
@@ -16,32 +15,6 @@ const unitSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: [ProductTag],
-    }),
-
-    getProductUnitsDetail: builder.query<
-      ApiResponse<{
-        productBaseUnit: Unit;
-        currentProductUnits: Unit[];
-        addableUnits: Unit[];
-      }>,
-      { productId: number }
-    >({
-      query: (data) => ({
-        url: `products/${data.productId}/units`,
-        method: "GET",
-      }),
-      providesTags: [ProductUnitAvailable],
-    }),
-    getProductSalePriceHistory: builder.query<
-      ApiResponse<{ product: ProductDetail }>,
-      { id: number }
-    >({
-      query: ({ id }) => ({
-        url: `products/${id}/price/sale/history`,
-        method: "GET",
-      }),
-
-      providesTags: (_result, _error, arg) => [{ type: "Product", id: arg.id }],
     }),
     getProductById: builder.query<
       ApiResponse<{ product: ProductDetail }>,
@@ -51,6 +24,16 @@ const unitSlice = apiSlice.injectEndpoints({
         url: `products/${id}`,
         method: "GET",
       }),
+    }),
+    getProductSalePriceHistory: builder.query<
+      ApiResponse<{ product: ProductDetail }>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `products/${id}/price/sale/history`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, arg) => [{ type: "Product", id: arg.id }],
     }),
     createProduct: builder.mutation<
       ApiResponse<{ products: Product }>,
@@ -63,19 +46,6 @@ const unitSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [ProductTag],
     }),
-    setUnitToProduct: builder.mutation<
-      void,
-      { unitIds: number[]; productId: number }
-    >({
-      query: ({ productId, unitIds }) => ({
-        url: `products/${productId}/units`,
-        method: "POST",
-        body: {
-          unitIds,
-        },
-      }),
-      invalidatesTags: [ProductTag, ProductUnitAvailable],
-    }),
     setPriceToProduct: builder.mutation<
       void,
       { sellingPrice: number; productId: number; unitId: number }
@@ -83,10 +53,7 @@ const unitSlice = apiSlice.injectEndpoints({
       query: ({ productId, sellingPrice, unitId }) => ({
         url: `products/${productId}/price/sale`,
         method: "POST",
-        body: {
-          sellingPrice,
-          unitId,
-        },
+        body: { sellingPrice, unitId },
       }),
       invalidatesTags: [ProductTag],
     }),
@@ -96,10 +63,8 @@ const unitSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProductsQuery,
-  useCreateProductMutation,
-  useSetUnitToProductMutation,
-  useSetPriceToProductMutation,
   useGetProductByIdQuery,
-  useGetProductUnitsDetailQuery,
   useGetProductSalePriceHistoryQuery,
-} = unitSlice;
+  useCreateProductMutation,
+  useSetPriceToProductMutation,
+} = productSlice;

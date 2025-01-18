@@ -10,7 +10,7 @@ import {
 import {
   useGetProductUnitsDetailQuery,
   useSetUnitToProductMutation,
-} from "@/features/product/api/productApiSlice.ts";
+} from "@/features/product/api/productUnitApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
