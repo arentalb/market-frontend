@@ -1,8 +1,8 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { useGetProductSalePriceHistoryQuery } from "@/features/product/api/productApiSlice.ts";
 import { useParams } from "react-router-dom";
-import { ProductSalePriceHistoryTable } from "@/features/product/components/productDetail/ProductSalePriceHistoryTable.tsx";
-import { ProductAddUnitDialog } from "@/features/product/components/product/ProductAddUnitDialog.tsx";
+import { ProductSalePriceHistoryTable } from "@/features/product/components/ProductSalePriceHistoryTable.tsx";
+import { ProductAddUnitDialog } from "@/features/product/components/ProductAddUnitDialog.tsx";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";

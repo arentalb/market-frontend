@@ -5,7 +5,7 @@ import {
   Product,
   ProductDetail,
 } from "@/features/product/types/product.types.ts";
-import { createProductSchemaType } from "@/features/product/forms/schema.ts";
+import { createProductSchemaType } from "@/features/product/schema/schema.ts";
 
 const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

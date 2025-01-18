@@ -15,7 +15,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   createSalePriceSchema,
   createSalePriceSchemaType,
-} from "@/features/product/forms/schema.ts";
+} from "@/features/product/schema/schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetPriceToProductMutation } from "@/features/product/api/productApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";

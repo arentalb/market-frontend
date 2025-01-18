@@ -17,7 +17,7 @@ import {
 } from "@/features/product/types/product.types.ts";
 import { useState } from "react";
 import { BookMinus, BookPlus } from "lucide-react";
-import { ProductSalePriceDialog } from "@/features/product/components/productDetail/ProductSalePriceDialog.tsx";
+import { ProductSalePriceDialog } from "@/features/product/components/ProductSalePriceDialog.tsx";
 import { useDispatch } from "react-redux";
 import {
   setProductId,
@@ -92,6 +92,14 @@ function UnitRow({
         </TableCell>
         <TableCell>
           <div className={"flex gap-2"}>
+            <button
+              onClick={() => {
+                dispatch(setProductId(productId));
+                dispatch(setProductUnitId(unit.id));
+              }}
+            >
+              <ProductSalePriceDialog />
+            </button>
             {unit.activePrice && (
               <button onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? (
@@ -101,14 +109,6 @@ function UnitRow({
                 )}
               </button>
             )}
-            <button
-              onClick={() => {
-                dispatch(setProductId(productId));
-                dispatch(setProductUnitId(unit.id));
-              }}
-            >
-              <ProductSalePriceDialog />
-            </button>
           </div>
         </TableCell>
       </TableRow>

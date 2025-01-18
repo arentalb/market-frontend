@@ -29,7 +29,7 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 import {
   createProductSchema,
   createProductSchemaType,
-} from "@/features/product/forms/schema.ts";
+} from "@/features/product/schema/schema.ts";
 import { ClientError } from "@/app/apiSlice.ts";
 
 export function ProductCreateDialog() {
