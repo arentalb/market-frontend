@@ -27,7 +27,7 @@ const unitSlice = apiSlice.injectEndpoints({
       { productId: number }
     >({
       query: (data) => ({
-        url: `products/${data.productId}/available-units`,
+        url: `products/${data.productId}/units/available-units`,
         method: "GET",
       }),
       providesTags: [ProductUnitAvailable],
