@@ -22,6 +22,7 @@ import {
   createUnitConversionSchema,
   createUnitConversionSchemaType,
 } from "@/features/unit/forms/schemas.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 type UnitConversionFormProps = {
   conversions: UnitConversion[];
@@ -90,10 +91,11 @@ export function UnitConversionForm({
       toast({ title: "سەرکەوتوو بوو" });
       reset();
       onClose();
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
+        description: error.message,
         variant: "destructive",
       });
     }

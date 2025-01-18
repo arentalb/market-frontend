@@ -10,6 +10,7 @@ import {
   createUnitSchemaType,
 } from "@/features/unit/forms/schemas.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ClientError } from "@/app/apiSlice.ts";
 
 type UnitFormProps = {
   units: Unit[];
@@ -56,10 +57,11 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
       });
       reset();
       onClose();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
+        description: error.message,
         variant: "destructive",
       });
     }

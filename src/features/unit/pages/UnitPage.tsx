@@ -7,6 +7,8 @@ import { CreateUnitDialog } from "@/features/unit/components/CreateUnitDialog.ts
 import { UnitTable } from "@/features/unit/components/UnitTable.tsx";
 import { CreateUnitConversionDialog } from "@/features/unit/components/CreateUnitConversionDialog.tsx";
 import { UnitConversionTable } from "@/features/unit/components/UnitConversionTable.tsx";
+import { Loader } from "@/components/common/Loader.tsx";
+import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 
 export function UnitPage() {
   return (
@@ -18,29 +20,39 @@ export function UnitPage() {
   );
 }
 function UnitConversionSection() {
-  const { isLoading: isLoadingConversion, data: unitConversionData } =
-    useGetUnitConversionsQuery();
+  const { isLoading, data, error } = useGetUnitConversionsQuery();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorBox error={error} />;
+  }
 
   return (
     <div>
       <div className={"mb-2 flex justify-between items-center"}>
         <p className={"text-2xl mb-2"}>پەیوەندیەکانی یەکەکان</p>
         <CreateUnitConversionDialog
-          conversions={unitConversionData?.data.conversions || []}
+          conversions={data?.data.conversions || []}
         />
       </div>
 
-      {!isLoadingConversion && (
-        <UnitConversionTable
-          conversions={unitConversionData?.data.conversions || []}
-        />
-      )}
+      {<UnitConversionTable conversions={data?.data.conversions || []} />}
     </div>
   );
 }
 function UnitSection() {
-  const { isLoading, data } = useGetUnitsQuery();
+  const { isLoading, data, error } = useGetUnitsQuery();
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorBox error={error} />;
+  }
   return (
     <div>
       <div className={"mb-2 flex justify-between items-center"}>

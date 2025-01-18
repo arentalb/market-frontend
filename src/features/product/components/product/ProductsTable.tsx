@@ -10,6 +10,7 @@ import {
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
 import { Product } from "@/features/product/types/product.types.ts";
 import { Eye } from "lucide-react";
+import { Link } from "react-router-dom";
 
 type ProductTableProps = {
   products: Product[];
@@ -41,9 +42,9 @@ export function ProductsTable({ products }: ProductTableProps) {
               <TableCell>{product.category.name}</TableCell>
               <TableCell>{product.baseUnit.unitSymbol}</TableCell>
               <TableCell>
-                <a href={`/app/products/${product.id}`}>
+                <Link to={`/app/products/${product.id}`}>
                   <Eye className=" h-5 w-5" />
-                </a>
+                </Link>
               </TableCell>
             </TableRow>
           ))}

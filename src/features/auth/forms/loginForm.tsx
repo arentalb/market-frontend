@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/features/auth/store/authSlice.ts";
 import { UserRoles } from "@/constants/userRoles.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 export default function LoginForm() {
   const form = useForm<loginSchemaType>({
@@ -58,11 +59,11 @@ export default function LoginForm() {
         navigate("/app/sale");
         return;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
-        description: "زەنیاریەکان غەڵەتن دوبارە هەوڵ بدەرەوە",
+        description: error.message,
         variant: "destructive",
       });
     }

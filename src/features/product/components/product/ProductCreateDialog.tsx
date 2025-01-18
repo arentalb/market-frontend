@@ -30,6 +30,7 @@ import {
   createProductSchema,
   createProductSchemaType,
 } from "@/features/product/forms/schema.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 export function ProductCreateDialog() {
   const [open, setOpen] = useState(false);
@@ -95,10 +96,11 @@ export function ProductForm({ onClose }: ProductFormProps) {
       console.log(data);
       reset();
       onClose();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
+        description: error.message,
         variant: "destructive",
       });
     }

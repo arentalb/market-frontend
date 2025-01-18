@@ -1,9 +1,11 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { useGetProductByIdQuery } from "@/features/product/api/productApiSlice.ts";
 import { useParams } from "react-router-dom";
-import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 import { ProductSalePriceHistoryTable } from "@/features/product/components/productDetail/ProductSalePriceHistoryTable.tsx";
 import { ProductAddUnitDialog } from "@/features/product/components/product/ProductAddUnitDialog.tsx";
+import { Loader } from "@/components/common/Loader.tsx";
+import { ErrorBox } from "@/components/common/ErrorBox.tsx";
+import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 
 export function ProductsDetailPage() {
   const { id } = useParams();
@@ -14,18 +16,20 @@ export function ProductsDetailPage() {
     { skip: !id || isNaN(productId) },
   );
 
-  if (!id || isNaN(productId)) {
+  if (!productId) {
     return <NotFoundPage />;
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
-
-  if (error || !data?.data.product) {
+  if (!data?.data.product) {
     return <NotFoundPage />;
   }
 
+  if (error) {
+    return <ErrorBox error={error} />;
+  }
   const { product } = data.data;
 
   return (

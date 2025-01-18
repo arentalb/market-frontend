@@ -14,6 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast.ts";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ClientError } from "@/app/apiSlice.ts";
 
 export function ProductAddUnitDialog() {
   const [open, setOpen] = useState(false);
@@ -85,9 +86,13 @@ export function SetUnitToProductForm({ onClose }: { onClose: () => void }) {
 
       setSelectedUnits([]);
       onClose();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      toast({ title: "هەڵە", variant: "destructive" });
+    } catch (e) {
+      const error = e as ClientError;
+      toast({
+        title: "هەڵە",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 

@@ -10,6 +10,7 @@ import {
   createCategorySchema,
   createCategorySchemaType,
 } from "@/features/category/forms/schema.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 type CategoryFormProps = {
   categories: Category[];
@@ -37,10 +38,11 @@ export function CategoryForm({ categories, onClose }: CategoryFormProps) {
       toast({ title: "سەرکەوتوو بوو" });
       reset();
       onClose();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
+        description: error.message,
         variant: "destructive",
       });
     }

@@ -23,6 +23,7 @@ import {
   useProductId,
   useProductUnitId,
 } from "@/features/product/store/productSlice.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 export function ProductSalePriceDialog() {
   const [open, setOpen] = useState(false);
@@ -88,10 +89,11 @@ export function SetSalePriceForm({ onClose }: { onClose: () => void }) {
 
       reset();
       onClose();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (e) {
+      const error = e as ClientError;
       toast({
         title: "هەڵە",
+        description: error.message,
         variant: "destructive",
       });
     }
