@@ -5,7 +5,10 @@ import {
   Product,
   ProductDetail,
 } from "@/features/product/types/product.types.ts";
-import { createProductSchemaType } from "@/features/product/schema/schema.ts";
+import {
+  createProductSchemaType,
+  updateProductSchemaType,
+} from "@/features/product/schema/schema.ts";
 
 const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,13 +20,14 @@ const productSlice = apiSlice.injectEndpoints({
       providesTags: [ProductTag],
     }),
     getProductById: builder.query<
-      ApiResponse<{ product: ProductDetail }>,
+      ApiResponse<{ product: Product }>,
       { id: number }
     >({
       query: ({ id }) => ({
         url: `products/${id}`,
         method: "GET",
       }),
+      providesTags: (_result, _error, arg) => [{ type: "Product", id: arg.id }],
     }),
     getProductSalePriceHistory: builder.query<
       ApiResponse<{ product: ProductDetail }>,
@@ -46,6 +50,23 @@ const productSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [ProductTag],
     }),
+    updateProduct: builder.mutation<
+      ApiResponse<{ products: Product }>,
+      {
+        data: updateProductSchemaType;
+        productId: number;
+      }
+    >({
+      query: (data) => ({
+        url: `products/${data.productId}`,
+        method: "PATCH",
+        body: data.data,
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: "Product", id: arg.productId },
+        ProductTag,
+      ],
+    }),
     setPriceToProduct: builder.mutation<
       void,
       { sellingPrice: number; productId: number; unitId: number }
@@ -67,4 +88,5 @@ export const {
   useGetProductSalePriceHistoryQuery,
   useCreateProductMutation,
   useSetPriceToProductMutation,
+  useUpdateProductMutation,
 } = productSlice;

@@ -8,14 +8,19 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { Pencil, SquareArrowOutUpRight, Trash } from "lucide-react";
+import { SquareArrowOutUpRight, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "@/features/product/api/productApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
+import { ProductEditDialog } from "@/features/product/components/ProductEditDialog.tsx";
+import { useDispatch } from "react-redux";
+import { setProductId } from "@/features/product/store/productSlice.ts";
 
 export function ProductsTable() {
   const { data, isLoading, error } = useGetProductsQuery();
+  const dispatch = useDispatch();
+
   if (isLoading) {
     return <Loader />;
   }
@@ -62,9 +67,13 @@ export function ProductsTable() {
               </TableCell>
               <TableCell>
                 <div className={"flex gap-2"}>
-                  <Link to={`/app/products/${product.id}`}>
-                    <Pencil className=" h-4 w-4 stroke-blue-500" />
-                  </Link>
+                  <button
+                    onClick={() => {
+                      dispatch(setProductId(product.id));
+                    }}
+                  >
+                    <ProductEditDialog />
+                  </button>
                   <Link to={`/app/products/${product.id}`}>
                     <Trash className=" h-4 w-4  stroke-red-500" />
                   </Link>
