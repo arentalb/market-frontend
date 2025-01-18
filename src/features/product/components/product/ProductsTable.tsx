@@ -9,13 +9,7 @@ import {
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
 import { Product } from "@/features/product/types/product.types.ts";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover.tsx";
-import { ChevronDown } from "lucide-react";
-import { ProductUnitsTable } from "@/features/product/components/product/ProductUnitsTable.tsx";
+import { Eye } from "lucide-react";
 
 type ProductTableProps = {
   products: Product[];
@@ -32,7 +26,7 @@ export function ProductsTable({ products }: ProductTableProps) {
             <TableHead className="text-right">وردەکاری کاڵا</TableHead>
             <TableHead className="text-right">جۆری کاڵا</TableHead>
             <TableHead className="text-right">یەکەی سەرەکی کاڵا</TableHead>
-            <TableHead className="text-right"> یەکەی فرۆشتن</TableHead>
+            <TableHead className="text-right"> یەکەکان</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -47,20 +41,9 @@ export function ProductsTable({ products }: ProductTableProps) {
               <TableCell>{product.category.name}</TableCell>
               <TableCell>{product.baseUnit.unitSymbol}</TableCell>
               <TableCell>
-                <Popover>
-                  <PopoverTrigger>
-                    <div className={"flex gap-2 items-center"}>
-                      <p>بینین</p>
-                      <ChevronDown className="ml-2 h-5 w-5" />
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <ProductUnitsTable
-                      productUnits={product.productUnits || []}
-                      selectedProductId={product.id}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <a href={`/app/products/${product.id}`}>
+                  <Eye className=" h-5 w-5" />
+                </a>
               </TableCell>
             </TableRow>
           ))}

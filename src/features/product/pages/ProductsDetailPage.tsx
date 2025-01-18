@@ -3,6 +3,7 @@ import { useGetProductByIdQuery } from "@/features/product/api/productApiSlice.t
 import { useParams } from "react-router-dom";
 import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 import { ProductSalePriceHistoryTable } from "@/features/product/components/productDetail/ProductSalePriceHistoryTable.tsx";
+import { ProductAddUnitDialog } from "@/features/product/components/product/ProductAddUnitDialog.tsx";
 
 export function ProductsDetailPage() {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export function ProductsDetailPage() {
       <div>
         <div className="mb-2 flex text-lg justify-between items-center">
           نرخی فرۆشتنەکان
+          <ProductAddUnitDialog />
         </div>
         <ProductSalePriceHistoryTable product={product} />
 

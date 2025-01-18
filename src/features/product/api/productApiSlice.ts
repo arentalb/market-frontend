@@ -1,11 +1,12 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
-import { ProductTag } from "@/constants/tags.ts";
+import { ProductTag, ProductUnitAvailable } from "@/constants/tags.ts";
 import {
   Product,
   ProductDetail,
 } from "@/features/product/types/product.types.ts";
 import { createProductSchemaType } from "@/features/product/forms/schema.ts";
+import { Unit } from "@/features/unit/types/unit.types.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,6 +16,21 @@ const unitSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: [ProductTag],
+    }),
+
+    getApplicableUnitsForProduct: builder.query<
+      ApiResponse<{
+        productBaseUnit: Unit;
+        currentProductUnits: Unit[];
+        addableUnits: Unit[];
+      }>,
+      { productId: number }
+    >({
+      query: (data) => ({
+        url: `products/${data.productId}/available-units`,
+        method: "GET",
+      }),
+      providesTags: [ProductUnitAvailable],
     }),
     getProductById: builder.query<
       ApiResponse<{ product: ProductDetail }>,
@@ -45,9 +61,11 @@ const unitSlice = apiSlice.injectEndpoints({
       query: ({ productId, unitIds }) => ({
         url: `products/${productId}/units`,
         method: "POST",
-        body: unitIds,
+        body: {
+          unitIds,
+        },
       }),
-      invalidatesTags: [ProductTag],
+      invalidatesTags: [ProductTag, ProductUnitAvailable],
     }),
     setPriceToProduct: builder.mutation<
       void,
@@ -73,4 +91,5 @@ export const {
   useSetUnitToProductMutation,
   useSetPriceToProductMutation,
   useGetProductByIdQuery,
+  useGetApplicableUnitsForProductQuery,
 } = unitSlice;
