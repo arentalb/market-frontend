@@ -6,7 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table.tsx";
-import { kurdishNumberFormatter } from "@/lib/utils.tsx";
+import {
+  convertISODateToKurdish,
+  kurdishNumberFormatter,
+} from "@/lib/utils.tsx";
 import {
   ProductDetail,
   ProductDetailUnit,
@@ -82,7 +85,7 @@ function UnitRow({
         </TableCell>
         <TableCell>
           {unit.activePrice ? (
-            <p> {new Date(unit.activePrice.effectiveDate).toLocaleString()}</p>
+            <p>{convertISODateToKurdish(unit.activePrice.effectiveDate)}</p>
           ) : (
             <p>-</p>
           )}
@@ -162,7 +165,7 @@ function PriceRow({
       </TableCell>
       <TableCell>
         {price.effectiveDate
-          ? new Date(price.effectiveDate).toLocaleString()
+          ? convertISODateToKurdish(price.effectiveDate)
           : "-"}
       </TableCell>
     </TableRow>
