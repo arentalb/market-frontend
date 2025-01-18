@@ -18,7 +18,7 @@ const unitSlice = apiSlice.injectEndpoints({
       providesTags: [ProductTag],
     }),
 
-    getApplicableUnitsForProduct: builder.query<
+    getProductUnitsDetail: builder.query<
       ApiResponse<{
         productBaseUnit: Unit;
         currentProductUnits: Unit[];
@@ -27,10 +27,21 @@ const unitSlice = apiSlice.injectEndpoints({
       { productId: number }
     >({
       query: (data) => ({
-        url: `products/${data.productId}/units/available-units`,
+        url: `products/${data.productId}/units`,
         method: "GET",
       }),
       providesTags: [ProductUnitAvailable],
+    }),
+    getProductSalePriceHistory: builder.query<
+      ApiResponse<{ product: ProductDetail }>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `products/${id}/price/sale/history`,
+        method: "GET",
+      }),
+
+      providesTags: (_result, _error, arg) => [{ type: "Product", id: arg.id }],
     }),
     getProductById: builder.query<
       ApiResponse<{ product: ProductDetail }>,
@@ -40,8 +51,6 @@ const unitSlice = apiSlice.injectEndpoints({
         url: `products/${id}`,
         method: "GET",
       }),
-
-      providesTags: (_result, _error, arg) => [{ type: "Product", id: arg.id }],
     }),
     createProduct: builder.mutation<
       ApiResponse<{ products: Product }>,
@@ -91,5 +100,6 @@ export const {
   useSetUnitToProductMutation,
   useSetPriceToProductMutation,
   useGetProductByIdQuery,
-  useGetApplicableUnitsForProductQuery,
+  useGetProductUnitsDetailQuery,
+  useGetProductSalePriceHistoryQuery,
 } = unitSlice;

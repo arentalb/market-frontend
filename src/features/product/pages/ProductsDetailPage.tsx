@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { useGetProductByIdQuery } from "@/features/product/api/productApiSlice.ts";
+import { useGetProductSalePriceHistoryQuery } from "@/features/product/api/productApiSlice.ts";
 import { useParams } from "react-router-dom";
 import { ProductSalePriceHistoryTable } from "@/features/product/components/productDetail/ProductSalePriceHistoryTable.tsx";
 import { ProductAddUnitDialog } from "@/features/product/components/product/ProductAddUnitDialog.tsx";
@@ -10,8 +10,7 @@ import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 export function ProductsDetailPage() {
   const { id } = useParams();
   const productId = Number(id);
-
-  const { data, isLoading, error } = useGetProductByIdQuery(
+  const { data, isLoading, error } = useGetProductSalePriceHistoryQuery(
     { id: productId },
     { skip: !id || isNaN(productId) },
   );

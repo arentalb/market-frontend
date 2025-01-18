@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog.tsx";
 import {
-  useGetApplicableUnitsForProductQuery,
+  useGetProductUnitsDetailQuery,
   useSetUnitToProductMutation,
 } from "@/features/product/api/productApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
@@ -52,7 +52,7 @@ export function SetUnitToProductForm({ onClose }: { onClose: () => void }) {
   const { id } = useParams();
   const productId = Number(id);
 
-  const { data: applicableUnitsData } = useGetApplicableUnitsForProductQuery(
+  const { data: applicableUnitsData } = useGetProductUnitsDetailQuery(
     { productId },
     { skip: !productId },
   );
