@@ -27,6 +27,7 @@ import { getUser } from "@/features/auth/store/authSlice.ts";
 import { UserRoles } from "@/constants/userRoles.ts";
 import { CategoryPage } from "@/features/category/pages/CategoryPage.tsx";
 import { ProductsDetailPage } from "@/features/product/pages/ProductsDetailPage.tsx";
+import { SupplierWorkerPage } from "@/features/company/pages/SupplierWorkerPage.tsx";
 
 const PrivateRoute = ({ allowedRoles }: { allowedRoles?: string[] }) => {
   const user = useSelector(getUser);
@@ -111,6 +112,7 @@ const router = createBrowserRouter([
             path: "products/:id",
             children: [{ index: true, element: <ProductsDetailPage /> }],
           },
+
           {
             path: "returns",
             children: [{ index: true, element: <ReturnedProductsPage /> }],
@@ -126,6 +128,10 @@ const router = createBrowserRouter([
           {
             path: "company",
             children: [{ index: true, element: <SupplierPage /> }],
+          },
+          {
+            path: "company/workers",
+            children: [{ index: true, element: <SupplierWorkerPage /> }],
           },
           {
             path: "units",

@@ -10,10 +10,12 @@ import {
 interface Supplier {
   id: number;
   name: string;
-  email: string;
   phone: string;
-  address: string;
-  website: string;
+  workers: {
+    id: number;
+    name: string;
+    phone: string;
+  }[];
 }
 const supplierSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
