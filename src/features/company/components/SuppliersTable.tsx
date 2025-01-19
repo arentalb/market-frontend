@@ -55,7 +55,7 @@ export function SuppliersTable() {
 
               <TableCell>
                 <Link
-                  to={`/app/company/workers`}
+                  to={`/app/company/${supplier.id}/workers`}
                   className={"flex  items-center gap-2"}
                 >
                   بینین

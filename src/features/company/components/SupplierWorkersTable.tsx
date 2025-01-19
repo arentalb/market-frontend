@@ -8,23 +8,34 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { SquareArrowOutUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import { ProductEditDialog } from "@/features/product/components/ProductEditDialog.tsx";
 import { useDispatch } from "react-redux";
-import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
+import { useGetSupplierByIdQuery } from "@/features/company/api/supplierApiSlice.ts";
 import { setSupplierId } from "@/features/company/store/supplierSlice.ts";
+import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 
 export function SupplierWorkersTable() {
-  const { data, isLoading, error } = useGetSuppliersQuery();
+  const { id } = useParams();
+  const supplierId = Number(id);
   const dispatch = useDispatch();
+  const { data, isLoading, error } = useGetSupplierByIdQuery(
+    { id: supplierId },
+    { skip: !id || isNaN(supplierId) },
+  );
 
-  if (!isLoading) {
-    return <Loader />;
+  if (!supplierId) {
+    return <NotFoundPage />;
   }
 
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (!data?.data.supplier) {
+    return <NotFoundPage />;
+  }
   if (error) {
     return <ErrorBox error={error} />;
   }
@@ -33,35 +44,28 @@ export function SupplierWorkersTable() {
   return (
     <div>
       <Table>
-        <TableCaption>لیستی هەمو کۆمپانیاکان</TableCaption>
+        <TableCaption>
+          لیستی هەموو مەندوبەکانی کۆمپانیا {supplier.name}
+        </TableCaption>
+
         <TableHeader>
           <TableRow>
             <TableHead className="text-right"> #</TableHead>
-            <TableHead className="text-right">ناوی کۆمپانیا</TableHead>
-            <TableHead className="text-right">ژمارەی کۆمپانیا</TableHead>
-            <TableHead className="text-right">مەندوبەکان </TableHead>
+            <TableHead className="text-right">ناوی مەندوب</TableHead>
+            <TableHead className="text-right">ژمارەی مەندوب</TableHead>
             <TableHead className="text-right"> کردارەکان</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {supplier.map((supplier, index) => (
-            <TableRow key={supplier.id}>
+          {supplier.workers.map((worker, index) => (
+            <TableRow key={worker.id}>
               <TableCell className="font-medium">
                 {kurdishNumberFormatter.format(index + 1)}
               </TableCell>
 
-              <TableCell>{supplier.name}</TableCell>
-              <TableCell>{supplier.phone}</TableCell>
+              <TableCell>{worker.name}</TableCell>
+              <TableCell>{worker.phone}</TableCell>
 
-              <TableCell>
-                <Link
-                  to={`/app/company/workers`}
-                  className={"flex  items-center gap-2"}
-                >
-                  بینین
-                  <SquareArrowOutUpRight className=" h-4 w-4" />
-                </Link>
-              </TableCell>
               <TableCell>
                 <div className={"flex gap-2"}>
                   <button

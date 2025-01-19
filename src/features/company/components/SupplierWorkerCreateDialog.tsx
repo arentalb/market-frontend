@@ -19,7 +19,6 @@ import {
   createSupplierSchemaType,
 } from "@/features/company/schemas/schema.ts";
 import { useCreateSupplierMutation } from "@/features/company/api/supplierApiSlice.ts";
-import { Loader } from "@/components/common/Loader.tsx";
 
 export function SupplierWorkerCreateDialog() {
   const [open, setOpen] = useState(false);
@@ -27,7 +26,6 @@ export function SupplierWorkerCreateDialog() {
   const handleClose = () => {
     setOpen(false);
   };
-  return <Loader />;
   return (
     <div dir="ltr" className="flex justify-end text-right">
       <Dialog open={open} onOpenChange={setOpen}>

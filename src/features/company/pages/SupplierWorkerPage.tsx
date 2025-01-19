@@ -5,7 +5,7 @@ import { SupplierWorkerCreateDialog } from "@/features/company/components/Suppli
 export function SupplierWorkerPage() {
   return (
     <div>
-      <PageHeader title={"کۆمپانیاکان"} />
+      <PageHeader title={"مەندوبەکان"} />
       <div>
         <div className={"mb-2 flex justify-end items-center"}>
           <SupplierWorkerCreateDialog />
