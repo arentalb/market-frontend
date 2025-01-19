@@ -20,7 +20,7 @@ import { ProductsPage } from "@/features/product/pages/ProductsPage.tsx";
 import { ReturnedProductsPage } from "@/features/product/pages/ReturnedProductsPage.tsx";
 import { MissingProductsPage } from "@/features/product/pages/MissingProductsPage.tsx";
 import { EmployeePage } from "@/features/employee/pages/EmployeePage.tsx";
-import { CompanyPage } from "@/features/company/pages/CompanyPage.tsx";
+import { SupplierPage } from "@/features/company/pages/SupplierPage.tsx";
 import { UnitPage } from "@/features/unit/pages/UnitPage.tsx";
 import { useSelector } from "react-redux";
 import { getUser } from "@/features/auth/store/authSlice.ts";
@@ -125,7 +125,7 @@ const router = createBrowserRouter([
           },
           {
             path: "company",
-            children: [{ index: true, element: <CompanyPage /> }],
+            children: [{ index: true, element: <SupplierPage /> }],
           },
           {
             path: "units",
