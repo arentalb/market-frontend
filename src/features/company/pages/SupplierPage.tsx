@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { SupplierCreateDialog } from "@/features/company/components/SupplierCreateDialog.tsx";
+import { CreateSupplierForm } from "@/features/company/components/CreateSupplierForm.tsx";
 import { SuppliersTable } from "@/features/company/components/SuppliersTable.tsx";
 
 export function SupplierPage() {
@@ -8,7 +8,7 @@ export function SupplierPage() {
       <PageHeader title={"کۆمپانیاکان"} />
       <div>
         <div className={"mb-2 flex justify-end items-center"}>
-          <SupplierCreateDialog />
+          <CreateSupplierForm />
         </div>
         <SuppliersTable />
       </div>
