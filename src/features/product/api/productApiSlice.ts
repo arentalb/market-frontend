@@ -67,6 +67,18 @@ const productSlice = apiSlice.injectEndpoints({
         ProductTag,
       ],
     }),
+    deleteProduct: builder.mutation<
+      ApiResponse<{ product: Product }>,
+      {
+        productId: number;
+      }
+    >({
+      query: (data) => ({
+        url: `products/${data.productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [ProductTag],
+    }),
     setPriceToProduct: builder.mutation<
       void,
       { sellingPrice: number; productId: number; unitId: number }
@@ -89,4 +101,5 @@ export const {
   useCreateProductMutation,
   useSetPriceToProductMutation,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = productSlice;

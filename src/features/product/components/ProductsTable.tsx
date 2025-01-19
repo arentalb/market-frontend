@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { SquareArrowOutUpRight, Trash } from "lucide-react";
+import { SquareArrowOutUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "@/features/product/api/productApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
@@ -16,6 +16,7 @@ import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import { ProductEditDialog } from "@/features/product/components/ProductEditDialog.tsx";
 import { useDispatch } from "react-redux";
 import { setProductId } from "@/features/product/store/productSlice.ts";
+import { ProductDeleteDialog } from "@/features/product/components/ProductDeleteDialog.tsx";
 
 export function ProductsTable() {
   const { data, isLoading, error } = useGetProductsQuery();
@@ -74,9 +75,13 @@ export function ProductsTable() {
                   >
                     <ProductEditDialog />
                   </button>
-                  <Link to={`/app/products/${product.id}`}>
-                    <Trash className=" h-4 w-4  stroke-red-500" />
-                  </Link>
+                  <button
+                    onClick={() => {
+                      dispatch(setProductId(product.id));
+                    }}
+                  >
+                    <ProductDeleteDialog />
+                  </button>
                 </div>
               </TableCell>
             </TableRow>
