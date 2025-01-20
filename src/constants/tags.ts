@@ -5,3 +5,4 @@ export const UnitConversionTag = "UnitConversion";
 export const CategoryTag = "Category";
 export const ProductUnitAvailable = "ProductUnitAvailable";
 export const SupplierTag = "Supplier";
+export const SupplierWorkerTag = "SupplierWorker";

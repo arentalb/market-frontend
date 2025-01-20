@@ -10,19 +10,20 @@ import { Supplier } from "@/features/company/types/supplier.types.ts";
 
 const supplierSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getSuppliers: builder.query<ApiResponse<{ supplier: Supplier[] }>, void>({
+    getSuppliers: builder.query<ApiResponse<{ suppliers: Supplier[] }>, void>({
       query: () => ({
-        url: `supplier`,
+        url: `suppliers`,
         method: "GET",
       }),
       providesTags: [SupplierTag],
     }),
+
     getSupplierById: builder.query<
       ApiResponse<{ supplier: Supplier }>,
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `supplier/${id}`,
+        url: `suppliers/${id}`,
         method: "GET",
       }),
       providesTags: (_result, _error, arg) => [
@@ -35,23 +36,21 @@ const supplierSlice = apiSlice.injectEndpoints({
       createSupplierSchemaType
     >({
       query: (data) => ({
-        url: `supplier`,
+        url: `suppliers`,
         method: "POST",
         body: data,
       }),
       invalidatesTags: [SupplierTag],
     }),
+
     updateSupplier: builder.mutation<
       ApiResponse<{ supplier: Supplier }>,
-      {
-        data: updateSupplierSchemaType;
-        id: number;
-      }
+      { id: number; data: updateSupplierSchemaType }
     >({
-      query: (data) => ({
-        url: `supplier/${data.id}`,
+      query: ({ id, data }) => ({
+        url: `suppliers/${id}`,
         method: "PATCH",
-        body: data.data,
+        body: data,
       }),
       invalidatesTags: (_result, _error, arg) => [
         { type: "Supplier", id: arg.id },

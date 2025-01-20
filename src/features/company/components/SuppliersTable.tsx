@@ -33,7 +33,7 @@ export function SuppliersTable() {
     return <ErrorBox error={error} />;
   }
 
-  const suppliers = data?.data.supplier || [];
+  const suppliers = data?.data.suppliers || [];
   if (suppliers.length === 0) {
     return (
       <p className="text-center text-lg text-gray-500">هیچ کۆمپانیایەک نییە </p>
