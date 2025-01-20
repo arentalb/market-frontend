@@ -18,7 +18,7 @@ import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 import { useState } from "react";
 import { PencilLine } from "lucide-react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
-import { EditSupplierWorkerForm } from "@/features/company/components/EditSupplierWorkerForm.tsx";
+import { EditSupplierWorkerForm } from "@/features/company/forms/EditSupplierWorkerForm.tsx";
 
 export function SupplierWorkersTable() {
   const { id } = useParams();

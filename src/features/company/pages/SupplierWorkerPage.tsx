@@ -3,7 +3,7 @@ import { SupplierWorkersTable } from "@/features/company/components/SupplierWork
 import { Button } from "@/components/ui/button.tsx";
 import { useState } from "react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
-import { CreateSupplierWorkerForm } from "@/features/company/components/CreateSupplierWorkerForm.tsx";
+import { CreateSupplierWorkerForm } from "@/features/company/forms/CreateSupplierWorkerForm.tsx";
 
 export function SupplierWorkerPage() {
   const [open, setOpen] = useState(false);

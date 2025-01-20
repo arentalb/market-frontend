@@ -8,7 +8,7 @@ import { ClientError } from "@/app/apiSlice.ts";
 import {
   createSupplierSchema,
   createSupplierSchemaType,
-} from "@/features/company/schemas/schema.ts";
+} from "@/features/company/schemas/supplierSchemas.ts";
 import { useCreateSupplierMutation } from "@/features/company/api/supplierApiSlice.ts";
 
 type CreateSupplierFormProps = {

@@ -17,7 +17,7 @@ import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts
 import { setSupplierId } from "@/features/company/store/supplierSlice.ts";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { useState } from "react";
-import { EditSupplierForm } from "@/features/company/components/EditSupplierForm.tsx";
+import { EditSupplierForm } from "@/features/company/forms/EditSupplierForm.tsx";
 
 export function SuppliersTable() {
   const { data, isLoading, error } = useGetSuppliersQuery();

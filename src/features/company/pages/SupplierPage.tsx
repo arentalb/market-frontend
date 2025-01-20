@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { SuppliersTable } from "@/features/company/components/SuppliersTable.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
-import { CreateSupplierForm } from "@/features/company/components/CreateSupplierForm.tsx";
+import { CreateSupplierForm } from "@/features/company/forms/CreateSupplierForm.tsx";
 import { useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 

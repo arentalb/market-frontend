@@ -5,7 +5,7 @@ import { SupplierTag } from "@/constants/tags.ts";
 import {
   createSupplierSchemaType,
   updateSupplierSchemaType,
-} from "@/features/company/schemas/schema.ts";
+} from "@/features/company/schemas/supplierSchemas.ts";
 
 interface Supplier {
   id: number;
