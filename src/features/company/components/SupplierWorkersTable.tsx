@@ -13,16 +13,24 @@ import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 import { useState } from "react";
-import { PencilLine } from "lucide-react";
+import { PencilLine, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { EditSupplierWorkerForm } from "@/features/company/forms/EditSupplierWorkerForm.tsx";
-import { useGetSupplierWorkersQuery } from "@/features/company/api/supplierWorkerApiSlice.ts";
+import {
+  useDeleteSupplierWorkerMutation,
+  useGetSupplierWorkersQuery,
+} from "@/features/company/api/supplierWorkerApiSlice.ts";
 import { SupplierWorker } from "@/features/company/types/supplier.types.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { useToast } from "@/hooks/use-toast.ts";
+import { ClientError } from "@/app/apiSlice.ts";
 
 export function SupplierWorkersTable() {
   const { id } = useParams();
   const supplierId = Number(id);
-  const [open, setOpen] = useState(false);
+  const [updateWorkerDialogOpen, setUpdateWorkerDialogOpen] = useState(false);
+  const [deleteWorkerDialogOpen, setDeleteWorkerDialogOpen] = useState(false);
+
   const [selectedWorker, setSelectedWorker] = useState<SupplierWorker | null>(
     null,
   );
@@ -30,6 +38,10 @@ export function SupplierWorkersTable() {
     { supplierId: supplierId },
     { skip: !id || isNaN(supplierId) },
   );
+
+  const [deleteSupplierWorker, { isLoading: isLoadingDelete }] =
+    useDeleteSupplierWorkerMutation();
+  const { toast } = useToast();
 
   if (!supplierId) {
     return <NotFoundPage />;
@@ -49,6 +61,22 @@ export function SupplierWorkersTable() {
   }
   if (error) {
     return <ErrorBox error={error} />;
+  }
+  function handleDeleteProduct() {
+    try {
+      deleteSupplierWorker({
+        supplierId,
+        workerId: selectedWorker?.id as number,
+      });
+      setDeleteWorkerDialogOpen(false);
+    } catch (e) {
+      const error = e as ClientError;
+      toast({
+        title: "هەڵە",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   }
   const workers = data?.data.workers || [];
   return (
@@ -78,11 +106,19 @@ export function SupplierWorkersTable() {
                 <div className={"flex gap-2"}>
                   <button
                     onClick={() => {
-                      setOpen(true);
+                      setUpdateWorkerDialogOpen(true);
                       setSelectedWorker(worker);
                     }}
                   >
                     <PencilLine width={18} height={18} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDeleteWorkerDialogOpen(true);
+                      setSelectedWorker(worker);
+                    }}
+                  >
+                    <Trash width={18} height={18} />
                   </button>
                 </div>
               </TableCell>
@@ -92,15 +128,31 @@ export function SupplierWorkersTable() {
       </Table>
       {selectedWorker && (
         <CustomDialog
-          open={open}
-          setOpen={setOpen}
+          open={updateWorkerDialogOpen}
+          setOpen={setUpdateWorkerDialogOpen}
           title="زانیاری کارمەند  تازە بکەرەوە"
           description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
         >
           <EditSupplierWorkerForm
-            onClose={() => setOpen(false)}
+            onClose={() => setUpdateWorkerDialogOpen(false)}
             worker={selectedWorker}
           />
+        </CustomDialog>
+      )}
+      {selectedWorker && (
+        <CustomDialog
+          open={deleteWorkerDialogOpen}
+          setOpen={setDeleteWorkerDialogOpen}
+          title=" کارمەند بسڕەوە"
+          description="دوای سرینەوە ناتوانیت بیگەڕێنیتەوە"
+        >
+          <Button
+            className={"w-full"}
+            variant={"destructive"}
+            onClick={handleDeleteProduct}
+          >
+            {isLoadingDelete ? "سڕینەوە ..." : "کارمەند بسڕەوە"}
+          </Button>
         </CustomDialog>
       )}
     </div>
