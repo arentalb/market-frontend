@@ -6,17 +6,8 @@ import {
   createSupplierSchemaType,
   updateSupplierSchemaType,
 } from "@/features/company/schemas/supplierSchemas.ts";
+import { Supplier } from "@/features/company/types/supplier.types.ts";
 
-interface Supplier {
-  id: number;
-  name: string;
-  phone: string;
-  workers: {
-    id: number;
-    name: string;
-    phone: string;
-  }[];
-}
 const supplierSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSuppliers: builder.query<ApiResponse<{ supplier: Supplier[] }>, void>({

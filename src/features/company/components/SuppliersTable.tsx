@@ -12,17 +12,19 @@ import { PencilLine, SquareArrowOutUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { useDispatch } from "react-redux";
-import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
-import { setSupplierId } from "@/features/company/store/supplierSlice.ts";
-import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { useState } from "react";
+import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
+import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { EditSupplierForm } from "@/features/company/forms/EditSupplierForm.tsx";
+import { Supplier } from "@/features/company/types/supplier.types.ts";
 
 export function SuppliersTable() {
   const { data, isLoading, error } = useGetSuppliersQuery();
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(
+    null,
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -31,8 +33,8 @@ export function SuppliersTable() {
     return <ErrorBox error={error} />;
   }
 
-  const supplier = data?.data.supplier || [];
-  if (supplier.length === 0) {
+  const suppliers = data?.data.supplier || [];
+  if (suppliers.length === 0) {
     return (
       <p className="text-center text-lg text-gray-500">هیچ کۆمپانیایەک نییە </p>
     );
@@ -52,7 +54,7 @@ export function SuppliersTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {supplier.map((supplier, index) => (
+          {suppliers.map((supplier, index) => (
             <TableRow key={supplier.id}>
               <TableCell className="font-medium">
                 {kurdishNumberFormatter.format(index + 1)}
@@ -64,17 +66,17 @@ export function SuppliersTable() {
               <TableCell>
                 <Link
                   to={`/app/company/${supplier.id}/workers`}
-                  className={"flex  items-center gap-2"}
+                  className={"flex items-center gap-2"}
                 >
                   بینین
-                  <SquareArrowOutUpRight className=" h-4 w-4" />
+                  <SquareArrowOutUpRight className="h-4 w-4" />
                 </Link>
               </TableCell>
               <TableCell>
                 <div className={"flex gap-2"}>
                   <button
                     onClick={() => {
-                      dispatch(setSupplierId(supplier.id));
+                      setSelectedSupplier(supplier);
                       setOpen(true);
                     }}
                   >
@@ -86,14 +88,20 @@ export function SuppliersTable() {
           ))}
         </TableBody>
       </Table>
-      <CustomDialog
-        open={open}
-        setOpen={setOpen}
-        title="زانیاری کۆمپانیاکا  تازە بکەرەوە"
-        description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
-      >
-        <EditSupplierForm onClose={() => setOpen(false)} />
-      </CustomDialog>
+
+      {selectedSupplier && (
+        <CustomDialog
+          open={open}
+          setOpen={setOpen}
+          title="زانیاری کۆمپانیاکا تازە بکەرەوە"
+          description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
+        >
+          <EditSupplierForm
+            onClose={() => setOpen(false)}
+            supplier={selectedSupplier}
+          />
+        </CustomDialog>
+      )}
     </div>
   );
 }
