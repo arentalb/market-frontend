@@ -1,50 +1,34 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { useGetProductSalePriceHistoryQuery } from "@/features/product/api/productApiSlice.ts";
 import { useParams } from "react-router-dom";
 import { ProductSalePriceHistoryTable } from "@/features/product/components/ProductSalePriceHistoryTable.tsx";
-import { ProductAddUnitDialog } from "@/features/product/components/ProductAddUnitDialog.tsx";
-import { Loader } from "@/components/common/Loader.tsx";
-import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
+import { CreateUnitForProductForm } from "@/features/product/components/CreateUnitForProductForm.tsx";
+import { useState } from "react";
+import { CustomDialog } from "@/components/CustomDialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 export function ProductsDetailPage() {
   const { id } = useParams();
   const productId = Number(id);
-  const { data, isLoading, error } = useGetProductSalePriceHistoryQuery(
-    { id: productId },
-    { skip: !id || isNaN(productId) },
-  );
-
-  if (!productId) {
-    return <NotFoundPage />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (!data?.data.product) {
-    return <NotFoundPage />;
-  }
-
-  if (error) {
-    return <ErrorBox error={error} />;
-  }
-  const { product } = data.data;
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      <PageHeader title={`${product.name}`} />
+      <PageHeader title={`نرخەکانی فرۆشتنی کاڵا`} />
       <div>
         <div className="mb-2 flex text-lg justify-between items-center">
           نرخی فرۆشتنەکان
-          <ProductAddUnitDialog />
+          <Button onClick={() => setOpen(true)}>یەکەی تازە زیاد بکە</Button>
         </div>
-        <ProductSalePriceHistoryTable product={product} />
-
-        <div className="mb-2 flex text-lg justify-between items-center">
-          نرخی کرینەکان
-        </div>
+        <ProductSalePriceHistoryTable productId={productId} />
       </div>
+      <CustomDialog
+        open={open}
+        setOpen={setOpen}
+        title=" یەکەی تازە زیاد بکە"
+        description="ئەو یەکانە دیاری بکە کە ئەتەوێت زیادی بکەیت"
+      >
+        <CreateUnitForProductForm onClose={() => setOpen(false)} />
+      </CustomDialog>
     </div>
   );
 }

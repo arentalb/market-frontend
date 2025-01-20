@@ -8,29 +8,40 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { PencilLine, SquareArrowOutUpRight, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "@/features/product/api/productApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { ProductEditDialog } from "@/features/product/components/ProductEditDialog.tsx";
-import { useDispatch } from "react-redux";
-import { setProductId } from "@/features/product/store/productSlice.ts";
-import { ProductDeleteDialog } from "@/features/product/components/ProductDeleteDialog.tsx";
+import { EditProductForm } from "@/features/product/components/EditProductForm.tsx";
+import { DeleteProductForm } from "@/features/product/components/DeleteProductForm.tsx";
+import { CustomDialog } from "@/components/CustomDialog.tsx";
+import { useState } from "react";
 
 export function ProductsTable() {
   const { data, isLoading, error } = useGetProductsQuery();
-  const dispatch = useDispatch();
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null,
+  );
 
-  if (error) {
-    return <ErrorBox error={error} />;
-  }
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorBox error={error} />;
 
   const products = data?.data.products || [];
+
+  const handleEditClick = (productId: number) => {
+    setSelectedProductId(productId);
+    setIsOpenEditDialog(true);
+  };
+
+  const handleDeleteClick = (productId: number) => {
+    setSelectedProductId(productId);
+    setIsOpenDeleteDialog(true);
+  };
+
   return (
     <div>
       <Table>
@@ -52,7 +63,6 @@ export function ProductsTable() {
               <TableCell className="font-medium">
                 {kurdishNumberFormatter.format(index + 1)}
               </TableCell>
-
               <TableCell>{product.name}</TableCell>
               <TableCell>{product.description}</TableCell>
               <TableCell>{product.category.name}</TableCell>
@@ -60,27 +70,27 @@ export function ProductsTable() {
               <TableCell>
                 <Link
                   to={`/app/products/${product.id}`}
-                  className={"flex  items-center gap-2"}
+                  className="flex items-center gap-2"
                 >
                   بینین
-                  <SquareArrowOutUpRight className=" h-4 w-4" />
+                  <SquareArrowOutUpRight className="h-4 w-4" />
                 </Link>
               </TableCell>
               <TableCell>
-                <div className={"flex gap-2"}>
+                <div className="flex gap-2">
                   <button
                     onClick={() => {
-                      dispatch(setProductId(product.id));
+                      handleEditClick(product.id);
                     }}
                   >
-                    <ProductEditDialog />
+                    <PencilLine width={18} height={18} />
                   </button>
                   <button
                     onClick={() => {
-                      dispatch(setProductId(product.id));
+                      handleDeleteClick(product.id);
                     }}
                   >
-                    <ProductDeleteDialog />
+                    <Trash width={18} height={18} />
                   </button>
                 </div>
               </TableCell>
@@ -88,6 +98,34 @@ export function ProductsTable() {
           ))}
         </TableBody>
       </Table>
+
+      <CustomDialog
+        open={isOpenEditDialog}
+        setOpen={setIsOpenEditDialog}
+        title="دەستکاری کاڵا بکە"
+        description="وردەکارییەکانی کاڵا لێرە بگۆڕە"
+      >
+        {selectedProductId && (
+          <EditProductForm
+            productId={selectedProductId}
+            onClose={() => setIsOpenEditDialog(false)}
+          />
+        )}
+      </CustomDialog>
+
+      <CustomDialog
+        open={isOpenDeleteDialog}
+        setOpen={setIsOpenDeleteDialog}
+        title="سڕینەوەی کاڵا"
+        description="ئایا دڵنیایت لە سڕینەوەی ئەم کاڵایە؟"
+      >
+        {selectedProductId && (
+          <DeleteProductForm
+            productId={selectedProductId}
+            onClose={() => setIsOpenDeleteDialog(false)}
+          />
+        )}
+      </CustomDialog>
     </div>
   );
 }

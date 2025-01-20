@@ -5,18 +5,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog.tsx";
-import { Button } from "@/components/ui/button.tsx";
 
 type CustomDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
   title: string;
   description?: string;
-  triggerText?: string;
   children: ReactNode;
-  showCloseButton?: boolean;
+  className?: string;
 };
 
 export function CustomDialog({
@@ -24,28 +21,24 @@ export function CustomDialog({
   setOpen,
   title,
   description,
-  triggerText = "Open Dialog",
   children,
-  showCloseButton = true,
+  className = "",
 }: CustomDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>{triggerText}</Button>
-      </DialogTrigger>
       <DialogContent
-        className="sm:max-w-[425px] text-right"
-        showDefaultCloseIcon={showCloseButton}
+        showDefaultCloseIcon={true}
+        className={`sm:max-w-[425px] text-right ${className}`}
       >
-        <DialogHeader>
-          <DialogTitle className={"text-right"}>{title}</DialogTitle>
+        <DialogHeader className={"border"}>
+          <DialogTitle className={"text-right mt-4"}>{title}</DialogTitle>
           {description && (
             <DialogDescription className={"text-right"}>
               {description}
             </DialogDescription>
           )}
         </DialogHeader>
-        {children}
+        <div className={"border"}>{children}</div>
       </DialogContent>
     </Dialog>
   );

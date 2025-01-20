@@ -8,19 +8,21 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { PencilLine, SquareArrowOutUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { ProductEditDialog } from "@/features/product/components/ProductEditDialog.tsx";
 import { useDispatch } from "react-redux";
 import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
 import { setSupplierId } from "@/features/company/store/supplierSlice.ts";
+import { CustomDialog } from "@/components/CustomDialog.tsx";
+import { useState } from "react";
+import { EditSupplierForm } from "@/features/company/components/EditSupplierForm.tsx";
 
 export function SuppliersTable() {
   const { data, isLoading, error } = useGetSuppliersQuery();
   const dispatch = useDispatch();
-
+  const [open, setOpen] = useState(false);
   if (isLoading) {
     return <Loader />;
   }
@@ -67,9 +69,10 @@ export function SuppliersTable() {
                   <button
                     onClick={() => {
                       dispatch(setSupplierId(supplier.id));
+                      setOpen(true);
                     }}
                   >
-                    <ProductEditDialog />
+                    <PencilLine width={18} height={18} />
                   </button>
                 </div>
               </TableCell>
@@ -77,6 +80,14 @@ export function SuppliersTable() {
           ))}
         </TableBody>
       </Table>
+      <CustomDialog
+        open={open}
+        setOpen={setOpen}
+        title="زانیاری کۆمپانیاکا  تازە بکەرەوە"
+        description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
+      >
+        <EditSupplierForm onClose={() => setOpen(false)} />
+      </CustomDialog>
     </div>
   );
 }

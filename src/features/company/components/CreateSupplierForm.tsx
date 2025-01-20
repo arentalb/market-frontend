@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button.tsx";
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -11,11 +10,12 @@ import {
   createSupplierSchemaType,
 } from "@/features/company/schemas/schema.ts";
 import { useCreateSupplierMutation } from "@/features/company/api/supplierApiSlice.ts";
-import { CustomDialog } from "@/components/CustomDialog.tsx";
 
-export function CreateSupplierForm() {
-  const [open, setOpen] = useState(false);
+type CreateSupplierFormProps = {
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
+export function CreateSupplierForm({ onClose }: CreateSupplierFormProps) {
   const {
     register,
     handleSubmit,
@@ -37,7 +37,7 @@ export function CreateSupplierForm() {
       const res = await createSupplier(data).unwrap();
       toast({ title: "سەرکەوتوو بوو", description: res.message });
       reset();
-      setOpen(false);
+      onClose(false);
     } catch (e) {
       const error = e as ClientError;
       toast({
@@ -48,50 +48,42 @@ export function CreateSupplierForm() {
     }
   };
   return (
-    <div dir="ltr" className="flex justify-end text-right">
-      <CustomDialog
-        open={open}
-        setOpen={setOpen}
-        title="کۆمپانیا زیاد بکە"
-        description="زانیاری کۆمپانیاکەت لێرە داغڵ بکە"
-        triggerText="کۆمپانیا زیاد بکە"
-      >
-        <div className="p-2">
-          <form
-            className="flex flex-col gap-2 max-w-sm"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className={"space-y-1"}>
-              <Label htmlFor="name">ناوی کۆمپانیا</Label>
-              <Input
-                id="name"
-                type="text"
-                {...register("name")}
-                aria-invalid={errors.name ? "true" : "false"}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
-            </div>
-            <div className={"space-y-1"}>
-              <Label htmlFor="phone">ژمارەی کۆمپانیا</Label>
-              <Input
-                id="phone"
-                type="text"
-                {...register("phone")}
-                aria-invalid={errors.name ? "true" : "false"}
-              />
-              {errors.phone && (
-                <p className="text-sm text-red-500">{errors.phone.message}</p>
-              )}
-            </div>
+    <div>
+      <div className="p-2">
+        <form
+          className="flex flex-col gap-2 max-w-sm"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className={"space-y-1"}>
+            <Label htmlFor="name">ناوی کۆمپانیا</Label>
+            <Input
+              id="name"
+              type="text"
+              {...register("name")}
+              aria-invalid={errors.name ? "true" : "false"}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+          <div className={"space-y-1"}>
+            <Label htmlFor="phone">ژمارەی کۆمپانیا</Label>
+            <Input
+              id="phone"
+              type="text"
+              {...register("phone")}
+              aria-invalid={errors.name ? "true" : "false"}
+            />
+            {errors.phone && (
+              <p className="text-sm text-red-500">{errors.phone.message}</p>
+            )}
+          </div>
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "درستکردن ..." : "دروستکردنی کۆمپانیا "}
-            </Button>
-          </form>
-        </div>
-      </CustomDialog>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "درستکردن ..." : "دروستکردنی کۆمپانیا "}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
