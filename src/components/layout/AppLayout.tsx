@@ -18,11 +18,14 @@ import {
   Ungroup,
   Users,
 } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { getUser } from "@/features/auth/store/authSlice.ts";
 import { useSelector } from "react-redux";
 
 export default function AppLayout() {
+  const location = useLocation(); // Get current route path
+  const user = useSelector(getUser);
+
   const links = [
     {
       name: "زانیاریەکان",
@@ -42,7 +45,6 @@ export default function AppLayout() {
       icon: <FileText className="h-5 w-5" />,
     },
     { name: "قەرزەکان", href: "/debts", icon: <Layers className="h-5 w-5" /> },
-
     {
       name: "موشتەریەکان",
       href: "/customers",
@@ -79,7 +81,6 @@ export default function AppLayout() {
       href: "/unit-conversions",
       icon: <Layers className="h-5 w-5" />,
     },
-
     {
       name: "جۆرەکان",
       href: "/categories",
@@ -87,13 +88,14 @@ export default function AppLayout() {
     },
   ];
 
-  const user = useSelector(getUser);
-
   return (
     <div className="flex h-screen w-full overflow-hidden">
       {/* Sidebar */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
-        <div className="flex flex-1 flex-col justify-between py-6 px-4">
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 lg:border-l lg:bg-gray-50 dark:lg:bg-gray-800 h-screen">
+        <div
+          className="flex flex-1 flex-col justify-between py-6 px-4 h-full overflow-y-auto"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           <div className="space-y-6">
             <Link
               to="/app/dashboard"
@@ -103,12 +105,17 @@ export default function AppLayout() {
               <span className="text-lg">مارکێتی فۆرێڤەر</span>
             </Link>
 
-            <nav className="space-y-1 overflow-auto">
+            <nav className="space-y-1">
               {links.map((link) => (
                 <Link
                   to={"/app" + link.href}
                   key={link.name}
-                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                  className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition 
+                    ${
+                      location.pathname === "/app" + link.href
+                        ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-50 font-bold"
+                        : "text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                    }`}
                 >
                   {link.icon}
                   <span className="ml-2">{link.name}</span>
@@ -152,7 +159,12 @@ export default function AppLayout() {
                         <Link
                           to={"/app" + link.href}
                           key={link.name}
-                          className="flex items-center gap-2 rounded-md py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                          className={`flex items-center gap-2 rounded-md py-2 text-sm font-medium transition 
+                            ${
+                              location.pathname === "/app" + link.href
+                                ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-50 font-bold"
+                                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                            }`}
                         >
                           {link.icon}
                           <span className="ml-2">{link.name}</span>
