@@ -32,6 +32,12 @@ export function SuppliersTable() {
   }
 
   const supplier = data?.data.supplier || [];
+  if (supplier.length === 0) {
+    return (
+      <p className="text-center text-lg text-gray-500">هیچ کۆمپانیایەک نییە </p>
+    );
+  }
+
   return (
     <div>
       <Table>

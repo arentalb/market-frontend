@@ -41,6 +41,12 @@ export function SupplierWorkersTable() {
   if (!data?.data.supplier) {
     return <NotFoundPage />;
   }
+
+  if (data.data.supplier.workers.length === 0) {
+    return (
+      <p className="text-center text-lg text-gray-500">هیچ مەندوبێک نییە </p>
+    );
+  }
   if (error) {
     return <ErrorBox error={error} />;
   }
