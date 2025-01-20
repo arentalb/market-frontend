@@ -3,7 +3,7 @@ import { ProductsTable } from "@/features/product/components/ProductsTable.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
-import { CreateProductForm } from "@/features/product/components/CreateProductForm.tsx";
+import { CreateProductForm } from "@/features/product/forms/CreateProductForm.tsx";
 
 export function ProductsPage() {
   const [open, setOpen] = useState(false);

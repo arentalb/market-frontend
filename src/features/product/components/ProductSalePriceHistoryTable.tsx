@@ -20,8 +20,8 @@ import { useDispatch } from "react-redux";
 import {
   setProductId,
   setProductUnitId,
-} from "@/features/product/store/productSlice.ts";
-import { CreateSellPriceForProductForm } from "@/features/product/components/CreateSellPriceForProductForm.tsx";
+} from "@/features/product/stores/productSlice.ts";
+import { CreateSellPriceForProductForm } from "@/features/product/forms/CreateSellPriceForProductForm.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useGetProductSalePriceHistoryQuery } from "@/features/product/api/productApiSlice.ts";

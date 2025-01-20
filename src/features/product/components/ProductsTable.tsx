@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "@/features/product/api/productApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { EditProductForm } from "@/features/product/components/EditProductForm.tsx";
-import { DeleteProductForm } from "@/features/product/components/DeleteProductForm.tsx";
+import { EditProductForm } from "@/features/product/forms/EditProductForm.tsx";
+import { DeleteProductForm } from "@/features/product/forms/DeleteProductForm.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { useState } from "react";
 

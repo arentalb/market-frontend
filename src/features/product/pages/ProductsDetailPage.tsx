@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { useParams } from "react-router-dom";
 import { ProductSalePriceHistoryTable } from "@/features/product/components/ProductSalePriceHistoryTable.tsx";
-import { CreateUnitForProductForm } from "@/features/product/components/CreateUnitForProductForm.tsx";
+import { CreateUnitForProductForm } from "@/features/product/forms/CreateUnitForProductForm.tsx";
 import { useState } from "react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { Button } from "@/components/ui/button.tsx";

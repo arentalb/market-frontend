@@ -1,12 +1,8 @@
 import {
   useProductId,
   useProductUnitId,
-} from "@/features/product/store/productSlice.ts";
+} from "@/features/product/stores/productSlice.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  createSalePriceSchema,
-  createSalePriceSchemaType,
-} from "@/features/product/schema/schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetPriceToProductMutation } from "@/features/product/api/productApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
@@ -14,6 +10,10 @@ import { ClientError } from "@/app/apiSlice.ts";
 import { Label } from "@/components/ui/label.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  createSalePriceSchema,
+  createSalePriceSchemaType,
+} from "@/features/product/schemas/salePriceSchema.ts";
 
 type CreateSellPriceForProductFormProps = {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;

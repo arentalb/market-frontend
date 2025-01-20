@@ -5,10 +5,11 @@ import {
   Product,
   ProductDetail,
 } from "@/features/product/types/product.types.ts";
+
 import {
   createProductSchemaType,
   updateProductSchemaType,
-} from "@/features/product/schema/schema.ts";
+} from "@/features/product/schemas/productSchemas.ts";
 
 const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

@@ -1,8 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  createProductSchema,
-  createProductSchemaType,
-} from "@/features/product/schema/schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateProductMutation } from "@/features/product/api/productApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
@@ -22,6 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  createProductSchema,
+  createProductSchemaType,
+} from "@/features/product/schemas/productSchemas.ts";
 
 type CreateProductFormProps = {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;

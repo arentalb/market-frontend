@@ -6,10 +6,6 @@ import {
 import { useGetCategoriesQuery } from "@/features/category/api/categoryApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  updateProductSchema,
-  updateProductSchemaType,
-} from "@/features/product/schema/schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientError } from "@/app/apiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
@@ -26,6 +22,10 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  updateProductSchema,
+  updateProductSchemaType,
+} from "@/features/product/schemas/productSchemas.ts";
 
 type EditProductFormProps = {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
