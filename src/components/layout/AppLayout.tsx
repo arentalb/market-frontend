@@ -42,6 +42,7 @@ export default function AppLayout() {
       icon: <FileText className="h-5 w-5" />,
     },
     { name: "قەرزەکان", href: "/debts", icon: <Layers className="h-5 w-5" /> },
+
     {
       name: "موشتەریەکان",
       href: "/customers",
@@ -74,6 +75,12 @@ export default function AppLayout() {
     },
     { name: "یەکەکان", href: "/units", icon: <Ungroup className="h-5 w-5" /> },
     {
+      name: "پایوەندیەکان",
+      href: "/unit-conversions",
+      icon: <Layers className="h-5 w-5" />,
+    },
+
+    {
       name: "جۆرەکان",
       href: "/categories",
       icon: <ChartBarStacked className="h-5 w-5" />,
@@ -83,7 +90,7 @@ export default function AppLayout() {
   const user = useSelector(getUser);
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-screen w-full overflow-hidden">
       {/* Sidebar */}
       <div className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800">
         <div className="flex flex-1 flex-col justify-between py-6 px-4">
@@ -96,7 +103,7 @@ export default function AppLayout() {
               <span className="text-lg">مارکێتی فۆرێڤەر</span>
             </Link>
 
-            <nav className="space-y-1">
+            <nav className="space-y-1 overflow-auto">
               {links.map((link) => (
                 <Link
                   to={"/app" + link.href}

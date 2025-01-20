@@ -1,4 +1,3 @@
-import { UnitConversion } from "@/features/unit/types/unit.types.ts";
 import {
   useCreateUnitConversionMutation,
   useGetUnitsQuery,
@@ -18,21 +17,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast.ts";
 import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
+import { ClientError } from "@/app/apiSlice.ts";
 import {
   createUnitConversionSchema,
   createUnitConversionSchemaType,
-} from "@/features/unit/forms/schemas.ts";
-import { ClientError } from "@/app/apiSlice.ts";
+} from "@/features/unit/schemas/unitConversionSchema.ts";
 
 type UnitConversionFormProps = {
-  conversions: UnitConversion[];
   onClose: () => void;
 };
 
-export function UnitConversionForm({
-  conversions,
-  onClose,
-}: UnitConversionFormProps) {
+export function CreateUnitConversionForm({ onClose }: UnitConversionFormProps) {
   const { data: unitsData } = useGetUnitsQuery();
   const units = unitsData?.data.units || [];
 
@@ -44,7 +39,6 @@ export function UnitConversionForm({
   const {
     handleSubmit,
     watch,
-    setError,
     reset,
     setValue,
     register,
@@ -62,24 +56,6 @@ export function UnitConversionForm({
 
   const onSubmit = async (formData: createUnitConversionSchemaType) => {
     const { fromUnitId, toUnitId, conversionRate } = formData;
-
-    const conversionExists = conversions.some((conversion) => {
-      const existingFrom = conversion.fromUnit.id;
-      const existingTo = conversion.toUnit.id;
-
-      return (
-        (fromUnitId === existingTo && toUnitId === existingFrom) ||
-        (fromUnitId === existingFrom && toUnitId === existingTo)
-      );
-    });
-
-    if (conversionExists) {
-      setError("toUnitId", {
-        type: "manual",
-        message: "ئەم پەیوەندی هەیە",
-      });
-      return;
-    }
 
     try {
       await createUnitConversion({

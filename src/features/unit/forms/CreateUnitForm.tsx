@@ -1,4 +1,3 @@
-import { Unit } from "@/features/unit/types/unit.types.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateUnitMutation } from "@/features/unit/api/unitApiSlice.ts";
 import { useToast } from "@/hooks/use-toast.ts";
@@ -8,20 +7,16 @@ import { Button } from "@/components/ui/button.tsx";
 import {
   createUnitSchema,
   createUnitSchemaType,
-} from "@/features/unit/forms/schemas.ts";
+} from "@/features/unit/schemas/unitSchemas.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientError } from "@/app/apiSlice.ts";
 
 type UnitFormProps = {
-  units: Unit[];
   onClose: () => void;
 };
-export function UnitForm({ units, onClose }: UnitFormProps) {
+export function CreateUnitForm({ onClose }: UnitFormProps) {
   const {
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
     reset,
     register,
     formState: { errors },
@@ -32,24 +27,8 @@ export function UnitForm({ units, onClose }: UnitFormProps) {
 
   const [createUnit, { isLoading }] = useCreateUnitMutation();
 
-  const unitSymbol = watch("unitSymbol");
-
   const { toast } = useToast();
   const onSubmit: SubmitHandler<createUnitSchemaType> = async (data) => {
-    if (unitSymbol) {
-      const symbolExists = units.some(
-        (unit) => unit.unitSymbol.toLowerCase() === unitSymbol.toLowerCase(),
-      );
-      if (symbolExists) {
-        setError("unitSymbol", {
-          type: "manual",
-          message: "ئەم هێمایە پێشتر دروستکراوە",
-        });
-        return;
-      } else {
-        clearErrors("unitSymbol");
-      }
-    }
     try {
       await createUnit(data).unwrap();
       toast({

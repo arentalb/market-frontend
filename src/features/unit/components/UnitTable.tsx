@@ -8,12 +8,21 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { Unit } from "@/features/unit/types/unit.types.ts";
+import { useGetUnitsQuery } from "@/features/unit/api/unitApiSlice.ts";
+import { Loader } from "@/components/common/Loader.tsx";
+import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 
-type UnitTableProps = {
-  units: Unit[];
-};
-export function UnitTable({ units }: UnitTableProps) {
+export function UnitTable() {
+  const { isLoading, data, error } = useGetUnitsQuery();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorBox error={error} />;
+  }
+  const units = data?.data.units || [];
   return (
     <div>
       <Table>

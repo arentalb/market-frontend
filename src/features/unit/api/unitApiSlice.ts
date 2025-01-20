@@ -2,10 +2,8 @@ import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import { Unit, UnitConversion } from "@/features/unit/types/unit.types.ts";
 import { UnitConversionTag, UnitTag } from "@/constants/tags.ts";
-import {
-  createUnitConversionSchemaType,
-  createUnitSchemaType,
-} from "@/features/unit/forms/schemas.ts";
+import { createUnitSchemaType } from "@/features/unit/schemas/unitSchemas.ts";
+import { createUnitConversionSchemaType } from "@/features/unit/schemas/unitConversionSchema.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

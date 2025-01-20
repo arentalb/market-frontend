@@ -28,6 +28,7 @@ import { UserRoles } from "@/constants/userRoles.ts";
 import { CategoryPage } from "@/features/category/pages/CategoryPage.tsx";
 import { ProductsDetailPage } from "@/features/product/pages/ProductsDetailPage.tsx";
 import { SupplierWorkerPage } from "@/features/company/pages/SupplierWorkerPage.tsx";
+import { UnitConversionPage } from "@/features/unit/pages/UnitConversionPage.tsx";
 
 const PrivateRoute = ({ allowedRoles }: { allowedRoles?: string[] }) => {
   const user = useSelector(getUser);
@@ -136,6 +137,10 @@ const router = createBrowserRouter([
           {
             path: "units",
             children: [{ index: true, element: <UnitPage /> }],
+          },
+          {
+            path: "unit-conversions",
+            children: [{ index: true, element: <UnitConversionPage /> }],
           },
           {
             path: "categories",

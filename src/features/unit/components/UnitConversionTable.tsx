@@ -8,13 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { UnitConversion } from "@/features/unit/types/unit.types.ts";
 import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
+import { useGetUnitConversionsQuery } from "@/features/unit/api/unitApiSlice.ts";
+import { Loader } from "@/components/common/Loader.tsx";
+import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 
-type UnitTableProps = {
-  conversions: UnitConversion[];
-};
-export function UnitConversionTable({ conversions }: UnitTableProps) {
+export function UnitConversionTable() {
+  const { isLoading, data, error } = useGetUnitConversionsQuery();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorBox error={error} />;
+  }
+
+  const conversions = data?.data.conversions || [];
   return (
     <div>
       <Table>
