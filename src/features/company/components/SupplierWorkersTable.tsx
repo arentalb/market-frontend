@@ -17,12 +17,15 @@ import { PencilLine } from "lucide-react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { EditSupplierWorkerForm } from "@/features/company/forms/EditSupplierWorkerForm.tsx";
 import { useGetSupplierWorkersQuery } from "@/features/company/api/supplierWorkerApiSlice.ts";
+import { SupplierWorker } from "@/features/company/types/supplier.types.ts";
 
 export function SupplierWorkersTable() {
   const { id } = useParams();
   const supplierId = Number(id);
   const [open, setOpen] = useState(false);
-
+  const [selectedWorker, setSelectedWorker] = useState<SupplierWorker | null>(
+    null,
+  );
   const { data, isLoading, error } = useGetSupplierWorkersQuery(
     { supplierId: supplierId },
     { skip: !id || isNaN(supplierId) },
@@ -76,6 +79,7 @@ export function SupplierWorkersTable() {
                   <button
                     onClick={() => {
                       setOpen(true);
+                      setSelectedWorker(worker);
                     }}
                   >
                     <PencilLine width={18} height={18} />
@@ -86,14 +90,19 @@ export function SupplierWorkersTable() {
           ))}
         </TableBody>
       </Table>
-      <CustomDialog
-        open={open}
-        setOpen={setOpen}
-        title="زانیاری کارمەند  تازە بکەرەوە"
-        description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
-      >
-        <EditSupplierWorkerForm onClose={() => setOpen(false)} />
-      </CustomDialog>
+      {selectedWorker && (
+        <CustomDialog
+          open={open}
+          setOpen={setOpen}
+          title="زانیاری کارمەند  تازە بکەرەوە"
+          description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
+        >
+          <EditSupplierWorkerForm
+            onClose={() => setOpen(false)}
+            worker={selectedWorker}
+          />
+        </CustomDialog>
+      )}
     </div>
   );
 }
