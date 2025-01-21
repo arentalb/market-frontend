@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast.ts";
 
 import {
-  PurchaseItemType,
   removePurchaseProduct,
   selectPurchaseProducts,
   updatePurchaseProduct,
@@ -27,6 +26,7 @@ import {
   PurchaseProductDetailSchemaType,
   purchaseSchema,
 } from "@/features/purchase/schemas/purchaseSchema.ts";
+import { PurchasedProduct } from "@/features/purchase/types/purchaseProduct.types.ts";
 
 export function SelectedProductList() {
   const purchaseProducts = useSelector(selectPurchaseProducts);
@@ -94,10 +94,10 @@ export function SelectedProductList() {
             <p>No products selected.</p>
           </div>
         ) : (
-          purchaseProducts.map((purchaseItem) => (
+          purchaseProducts.map((purchasedProduct) => (
             <SelectedProductCard
-              key={purchaseItem.product.id}
-              purchaseItem={purchaseItem}
+              key={purchasedProduct.product.id}
+              purchasedProduct={purchasedProduct}
               setIsItemsValid={setIsItemsValid}
             />
           ))
@@ -108,12 +108,12 @@ export function SelectedProductList() {
 }
 
 interface SelectedProductCardProps {
-  purchaseItem: PurchaseItemType;
+  purchasedProduct: PurchasedProduct;
   setIsItemsValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function SelectedProductCard({
-  purchaseItem,
+  purchasedProduct,
   setIsItemsValid,
 }: SelectedProductCardProps) {
   const dispatch = useDispatch();
@@ -126,8 +126,8 @@ function SelectedProductCard({
   } = useForm<PurchaseProductDetailSchemaType>({
     resolver: zodResolver(PurchaseProductDetailSchema),
     defaultValues: {
-      quantity: purchaseItem.quantity,
-      price: purchaseItem.price,
+      quantity: purchasedProduct.quantity,
+      price: purchasedProduct.price,
     },
   });
 
@@ -135,7 +135,7 @@ function SelectedProductCard({
   const price = watch("price");
 
   const handleDeleteProduct = () => {
-    dispatch(removePurchaseProduct(purchaseItem.product.id));
+    dispatch(removePurchaseProduct(purchasedProduct.product.id));
   };
 
   const handleInputChange = (field: "quantity" | "price", value: string) => {
@@ -148,7 +148,7 @@ function SelectedProductCard({
     if (parsedValue.success) {
       dispatch(
         updatePurchaseProduct({
-          productId: purchaseItem.product.id,
+          productId: purchasedProduct.product.id,
           field,
           value: parsedValue.data,
         }),
@@ -162,17 +162,19 @@ function SelectedProductCard({
   return (
     <div className="border p-4 rounded-md mb-2 flex justify-between items-center">
       <div>
-        <p className="text-lg font-semibold">{purchaseItem.product.name}</p>
+        <p className="text-lg font-semibold">{purchasedProduct.product.name}</p>
         <p className="text-sm text-gray-600">
-          {purchaseItem.selectedUnit.unitSymbol}
+          {purchasedProduct.selectedUnit.unitSymbol}
         </p>
       </div>
 
       <div className="flex items-end space-x-4 gap-2">
         <div>
-          <Label htmlFor={`quantity-${purchaseItem.product.id}`}>عەدەد</Label>
+          <Label htmlFor={`quantity-${purchasedProduct.product.id}`}>
+            عەدەد
+          </Label>
           <Input
-            id={`quantity-${purchaseItem.product.id}`}
+            id={`quantity-${purchasedProduct.product.id}`}
             type="number"
             {...register("quantity")}
             value={quantity}
@@ -184,9 +186,9 @@ function SelectedProductCard({
         </div>
 
         <div>
-          <Label htmlFor={`price-${purchaseItem.product.id}`}>نرخ</Label>
+          <Label htmlFor={`price-${purchasedProduct.product.id}`}>نرخ</Label>
           <Input
-            id={`price-${purchaseItem.product.id}`}
+            id={`price-${purchasedProduct.product.id}`}
             type="number"
             {...register("price")}
             value={price}

@@ -17,3 +17,14 @@ export type ProductSearchResult = {
   category: Category;
   productUnits: Unit[];
 };
+
+export type PurchasedProduct = {
+  product: {
+    id: number;
+    name: string;
+    description: string;
+  };
+  selectedUnit: Unit;
+  quantity: number;
+  price: number;
+};

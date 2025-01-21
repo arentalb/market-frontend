@@ -4,44 +4,18 @@ import {
   loadStateLocalStorage,
   saveStateLocalStorage,
 } from "@/lib/localStorage.ts";
-
-export type UnitMock = {
-  id: number;
-  unitName: string;
-  unitSymbol: string;
-};
-
-export type CategoryMock = {
-  id: number;
-  name: string;
-};
-
-export type ProductMock = {
-  id: number;
-  name: string;
-  description: string;
-  baseUnit: UnitMock;
-  category: CategoryMock;
-  productUnits: UnitMock[];
-};
-
-export interface PurchaseItemType {
-  product: ProductMock;
-  selectedUnit: UnitMock;
-  quantity: number;
-  price: number;
-}
+import { PurchasedProduct } from "@/features/purchase/types/purchaseProduct.types.ts";
 
 const LOCAL_STORAGE_KEY = "purchase";
 
-const initialState: PurchaseItemType[] =
-  loadStateLocalStorage<PurchaseItemType[]>(LOCAL_STORAGE_KEY) || [];
+const initialState: PurchasedProduct[] =
+  loadStateLocalStorage<PurchasedProduct[]>(LOCAL_STORAGE_KEY) || [];
 
 const purchaseSlice = createSlice({
   name: "purchase",
   initialState,
   reducers: {
-    addPurchaseProduct: (state, action: PayloadAction<PurchaseItemType>) => {
+    addPurchaseProduct: (state, action: PayloadAction<PurchasedProduct>) => {
       const { product, selectedUnit } = action.payload;
       const existingProduct = state.find(
         (item) => item.product.id === product.id,
