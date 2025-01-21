@@ -4,12 +4,14 @@ import apiSlice from "./apiSlice.ts";
 import authReducer from "../features/auth/store/authSlice.ts";
 import productReducer from "@/features/product/stores/productSlice.ts";
 import supplierReducer from "../features/company/store/supplierSlice.ts";
+import purchaseReducer from "../features/purchase/stores/purchaseSlice.ts";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     product: productReducer,
     supplier: supplierReducer,
+    purchase: purchaseReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

@@ -184,7 +184,8 @@ export default function AppLayout() {
         </header>
 
         {/* Scrollable Main Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-gray-50 dark:bg-gray-900">
+        <main className="flex-1 flex flex-col min-h-0 p-4 lg:p-8 bg-gray-50 dark:bg-gray-900">
+          {/* Child Routes/Pages */}
           <Outlet />
         </main>
       </div>
