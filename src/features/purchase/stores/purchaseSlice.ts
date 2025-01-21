@@ -16,12 +16,12 @@ const purchaseSlice = createSlice({
   initialState,
   reducers: {
     addPurchaseProduct: (state, action: PayloadAction<PurchasedProduct>) => {
-      const { product, selectedUnit } = action.payload;
+      const { product, unitId } = action.payload;
       const existingProduct = state.find(
         (item) => item.product.id === product.id,
       );
       if (existingProduct) {
-        existingProduct.selectedUnit = selectedUnit;
+        existingProduct.unitId = unitId;
       } else {
         state.push(action.payload);
       }

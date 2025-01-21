@@ -18,34 +18,42 @@ import { useToast } from "@/hooks/use-toast.ts";
 
 import {
   removePurchaseProduct,
+  resetPurchaseProducts,
   selectPurchaseProducts,
   updatePurchaseProduct,
 } from "@/features/purchase/stores/purchaseSlice";
 import {
+  purchaseInvoiceSchema,
   PurchaseProductDetailSchema,
   PurchaseProductDetailSchemaType,
-  purchaseSchema,
 } from "@/features/purchase/schemas/purchaseSchema.ts";
 import { PurchasedProduct } from "@/features/purchase/types/purchaseProduct.types.ts";
+import { ClientError } from "@/app/apiSlice.ts";
+import { useCreatePurchaseInvoiceMutation } from "@/features/purchase/api/purchaseApiSlice.ts";
+import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
 
 export function SelectedProductList() {
   const purchaseProducts = useSelector(selectPurchaseProducts);
   const [selectedCompany, setSelectedCompany] = useState<string>("");
   const [isItemsValid, setIsItemsValid] = useState<boolean>(true);
   const { toast } = useToast();
-
-  const handleCreatePurchase = () => {
+  const dispatch = useDispatch();
+  const [createPurchaseInvoice, { isLoading }] =
+    useCreatePurchaseInvoiceMutation();
+  const { data: suppliersData, isLoading: isLoadingSuppliers } =
+    useGetSuppliersQuery();
+  const handleCreatePurchase = async () => {
     const payload = {
-      company: selectedCompany,
+      supplierId: parseInt(selectedCompany),
       products: purchaseProducts.map((p) => ({
         productId: p.product.id,
-        selectedUnitId: p.selectedUnit.id,
+        unitId: p.unitId.id,
         quantity: p.quantity,
         price: p.price,
       })),
     };
 
-    const validationResult = purchaseSchema.safeParse(payload);
+    const validationResult = purchaseInvoiceSchema.safeParse(payload);
 
     if (!validationResult.success) {
       toast({
@@ -55,13 +63,25 @@ export function SelectedProductList() {
       });
       return;
     }
-
-    toast({
-      title: "Purchase Created",
-      description: "Purchase created successfully.",
-    });
+    try {
+      await createPurchaseInvoice(payload);
+      console.log(payload);
+      toast({
+        title: "Purchase Created",
+        description: "Purchase created successfully.",
+      });
+      dispatch(resetPurchaseProducts());
+    } catch (e) {
+      const error = e as ClientError;
+      toast({
+        title: "هەڵە هەیە",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
+  const suppliers = suppliersData?.data.suppliers || [];
   return (
     <div className="border p-2 flex flex-col overflow-y-auto">
       <div className="mb-4 flex items-end gap-2">
@@ -71,11 +91,24 @@ export function SelectedProductList() {
             <SelectTrigger>
               <SelectValue placeholder="کۆمپانیا دیاری بکە" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="company1">Company 1</SelectItem>
-              <SelectItem value="company2">Company 2</SelectItem>
-              <SelectItem value="company3">Company 3</SelectItem>
-            </SelectContent>
+            {suppliers.length > 0 && (
+              <SelectContent>
+                {isLoadingSuppliers ? (
+                  <SelectItem disabled value={""}>
+                    کۆمپانیاکان...
+                  </SelectItem>
+                ) : (
+                  suppliers?.map((supplier) => (
+                    <SelectItem
+                      key={supplier.id}
+                      value={supplier.id.toString()}
+                    >
+                      {supplier.name}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            )}
           </Select>
         </div>
         <Button
@@ -84,7 +117,7 @@ export function SelectedProductList() {
           }
           onClick={handleCreatePurchase}
         >
-          بیکڕە
+          {isLoading ? "کڕین ..." : "بیکڕە"}
         </Button>
       </div>
 
@@ -164,7 +197,7 @@ function SelectedProductCard({
       <div>
         <p className="text-lg font-semibold">{purchasedProduct.product.name}</p>
         <p className="text-sm text-gray-600">
-          {purchasedProduct.selectedUnit.unitSymbol}
+          {purchasedProduct.unitId.unitSymbol}
         </p>
       </div>
 

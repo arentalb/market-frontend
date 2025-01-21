@@ -24,7 +24,10 @@ export type PurchasedProduct = {
     name: string;
     description: string;
   };
-  selectedUnit: Unit;
+  unitId: Unit;
   quantity: number;
   price: number;
+};
+export type PurchaseInvoice = {
+  supplierId: number;
 };

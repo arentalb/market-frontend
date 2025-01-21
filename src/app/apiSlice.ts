@@ -10,6 +10,7 @@ import {
   CategoryTag,
   ProductTag,
   ProductUnitAvailable,
+  PurchaseInvoiceTag,
   SupplierTag,
   SupplierWorkerTag,
   UnitConversionTag,
@@ -73,6 +74,7 @@ const apiSlice = createApi({
     ProductUnitAvailable,
     SupplierTag,
     SupplierWorkerTag,
+    PurchaseInvoiceTag,
   ],
   endpoints: () => ({}),
 });

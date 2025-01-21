@@ -76,7 +76,7 @@ function FoundProductCard({ product }: FoundProductCardProps) {
     dispatch(
       addPurchaseProduct({
         product,
-        selectedUnit,
+        unitId: selectedUnit,
         quantity: 1,
         price: 1000,
       }),
