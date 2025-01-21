@@ -10,6 +10,7 @@ import {
   createProductSchemaType,
   updateProductSchemaType,
 } from "@/features/product/schemas/productSchemas.ts";
+import { ProductSearchResult } from "@/features/purchase/types/purchaseProduct.types.ts";
 
 const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -91,6 +92,17 @@ const productSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [ProductTag],
     }),
+    searchProducts: builder.query<
+      ApiResponse<{ products: ProductSearchResult[] }>,
+      { name: string }
+    >({
+      query: ({ name }) => ({
+        url: `products/search`,
+        method: "GET",
+        params: { name },
+      }),
+      providesTags: [ProductTag],
+    }),
   }),
   overrideExisting: true,
 });
@@ -103,4 +115,5 @@ export const {
   useSetPriceToProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useSearchProductsQuery,
 } = productSlice;

@@ -1,4 +1,3 @@
-import { ProductMock, productsMock } from "@/features/purchase/stores/data.ts";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { addPurchaseProduct } from "@/features/purchase/stores/purchaseSlice";
@@ -6,25 +5,23 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useSearchProductsQuery } from "@/features/product/api/productApiSlice.ts";
+import { ProductSearchResult } from "@/features/purchase/types/purchaseProduct.types.ts";
+import { Loader } from "@/components/common/Loader.tsx";
 
 export function FoundProductList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredProducts, setFilteredProducts] =
-    useState<ProductMock[]>(productsMock);
+
+  const { data, isLoading } = useSearchProductsQuery(
+    { name: searchTerm },
+    { skip: !searchTerm },
+  );
+
+  const filteredProducts = searchTerm ? data?.data.products : [];
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setSearchTerm(value);
-    if (!value) {
-      setFilteredProducts(productsMock);
-    } else {
-      const lowerValue = value.toLowerCase();
-      setFilteredProducts(
-        productsMock.filter((product) =>
-          product.name.toLowerCase().includes(lowerValue),
-        ),
-      );
-    }
   }
 
   return (
@@ -40,12 +37,14 @@ export function FoundProductList() {
       </div>
 
       <div className="flex-grow overflow-y-auto scroll-bar pl-2">
-        {filteredProducts.length === 0 ? (
+        {isLoading ? (
+          <Loader />
+        ) : filteredProducts?.length === 0 ? (
           <div className="text-center text-gray-500 mt-4">
-            <p>No products selected.</p>
+            <p>هیج کاڵایەک نەدۆزرایەوە</p>
           </div>
         ) : (
-          filteredProducts.map((product) => (
+          filteredProducts?.map((product) => (
             <FoundProductCard key={product.id} product={product} />
           ))
         )}
@@ -55,7 +54,7 @@ export function FoundProductList() {
 }
 
 interface FoundProductCardProps {
-  product: ProductMock;
+  product: ProductSearchResult;
 }
 
 function FoundProductCard({ product }: FoundProductCardProps) {
@@ -91,12 +90,13 @@ function FoundProductCard({ product }: FoundProductCardProps) {
       <div>
         <p className="text-lg font-semibold">{product.name}</p>
         <p className="text-sm text-gray-600">{product.description}</p>
-        <div className="flex flex-wrap gap-2 ">
-          {product.productUnits.map((unit) => (
+        <div className="flex flex-wrap gap-2 mt-1">
+          {product.productUnits?.map((unit) => (
             <Button
               key={unit.id}
               variant={selectedUnitId === unit.id ? "default" : "secondary"}
               onClick={() => onSelectUnit(unit.id)}
+              className={"border"}
             >
               {unit.unitSymbol}
             </Button>
