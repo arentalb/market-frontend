@@ -7,3 +7,4 @@ export const ProductUnitAvailable = "ProductUnitAvailable";
 export const SupplierTag = "Supplier";
 export const SupplierWorkerTag = "SupplierWorker";
 export const PurchaseInvoiceTag = "PurchaseInvoice";
+export const InventoryTag = "Inventory";

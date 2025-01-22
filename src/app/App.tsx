@@ -90,7 +90,7 @@ const router = createBrowserRouter([
           },
           {
             path: "inventory",
-            element: <PrivateRoute allowedRoles={["manager", "owner"]} />,
+            element: <PrivateRoute allowedRoles={["manager", "Owner"]} />,
             children: [{ index: true, element: <InventoryPage /> }],
           },
           {
