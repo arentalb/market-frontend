@@ -38,23 +38,48 @@ export default function AppLayout() {
       href: "/purchase",
       icon: <ShoppingCart className="h-5 w-5" />,
     },
-    { name: "مەغزەن", href: "/inventory", icon: <Box className="h-5 w-5" /> },
     {
       name: "وەسڵەکان",
       href: "/invoices",
       icon: <FileText className="h-5 w-5" />,
     },
-    { name: "قەرزەکان", href: "/debts", icon: <Layers className="h-5 w-5" /> },
+    { name: "مەغزەن", href: "/inventory", icon: <Box className="h-5 w-5" /> },
+
+    {
+      name: "کاڵاکان",
+      href: "/products",
+      icon: <Package className="h-5 w-5" />,
+    },
+    { name: "یەکەکان", href: "/units", icon: <Ungroup className="h-5 w-5" /> },
+
+    {
+      name: "جۆرەکان",
+      href: "/categories",
+      icon: <ChartBarStacked className="h-5 w-5" />,
+    },
+    {
+      name: "پایوەندیەکان",
+      href: "/unit-conversions",
+      icon: <Layers className="h-5 w-5" />,
+    },
     {
       name: "موشتەریەکان",
       href: "/customers",
       icon: <Users className="h-5 w-5" />,
     },
     {
-      name: "کاڵاکان",
-      href: "/products",
-      icon: <Package className="h-5 w-5" />,
+      name: "کۆمپانیا",
+      href: "/company",
+      icon: <Building className="h-5 w-5" />,
     },
+    {
+      name: "کارمەند",
+      href: "/employees",
+      icon: <Contact className="h-5 w-5" />,
+    },
+
+    { name: "قەرزەکان", href: "/debts", icon: <Layers className="h-5 w-5" /> },
+
     {
       name: "گەراوەکان",
       href: "/returns",
@@ -64,27 +89,6 @@ export default function AppLayout() {
       name: "ونبوەکان",
       href: "/missing",
       icon: <AlertCircle className="h-5 w-5" />,
-    },
-    {
-      name: "کارمەند",
-      href: "/employees",
-      icon: <Contact className="h-5 w-5" />,
-    },
-    {
-      name: "کۆمپانیا",
-      href: "/company",
-      icon: <Building className="h-5 w-5" />,
-    },
-    { name: "یەکەکان", href: "/units", icon: <Ungroup className="h-5 w-5" /> },
-    {
-      name: "پایوەندیەکان",
-      href: "/unit-conversions",
-      icon: <Layers className="h-5 w-5" />,
-    },
-    {
-      name: "جۆرەکان",
-      href: "/categories",
-      icon: <ChartBarStacked className="h-5 w-5" />,
     },
   ];
 
