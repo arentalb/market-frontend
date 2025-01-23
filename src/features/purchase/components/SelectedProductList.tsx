@@ -23,14 +23,14 @@ import {
   updatePurchaseProduct,
 } from "@/features/purchase/stores/purchaseSlice";
 import {
-  purchaseInvoiceSchema,
   PurchaseProductDetailSchema,
   PurchaseProductDetailSchemaType,
+  purchaseSchema,
 } from "@/features/purchase/schemas/purchaseSchema.ts";
 import { PurchasedProduct } from "@/features/purchase/types/purchaseProduct.types.ts";
 import { ClientError } from "@/app/apiSlice.ts";
-import { useCreatePurchaseInvoiceMutation } from "@/features/purchase/api/purchaseApiSlice.ts";
 import { useGetSuppliersQuery } from "@/features/company/api/supplierApiSlice.ts";
+import { useCreatePurchaseMutation } from "@/features/purchase/api/purchaseApiSlice.ts";
 
 export function SelectedProductList() {
   const purchaseProducts = useSelector(selectPurchaseProducts);
@@ -38,8 +38,7 @@ export function SelectedProductList() {
   const [isItemsValid, setIsItemsValid] = useState<boolean>(true);
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const [createPurchaseInvoice, { isLoading }] =
-    useCreatePurchaseInvoiceMutation();
+  const [createPurchaseInvoice, { isLoading }] = useCreatePurchaseMutation();
   const { data: suppliersData, isLoading: isLoadingSuppliers } =
     useGetSuppliersQuery();
   const handleCreatePurchase = async () => {
@@ -53,7 +52,7 @@ export function SelectedProductList() {
       })),
     };
 
-    const validationResult = purchaseInvoiceSchema.safeParse(payload);
+    const validationResult = purchaseSchema.safeParse(payload);
 
     if (!validationResult.success) {
       toast({

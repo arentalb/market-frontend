@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const purchaseInvoiceSchema = z.object({
+export const purchaseSchema = z.object({
   supplierId: z.coerce.number().int().min(1, "Please select a company."),
   products: z
     .array(
@@ -14,7 +14,7 @@ export const purchaseInvoiceSchema = z.object({
     .min(1, "At least one product must be added"),
 });
 
-export type PurchaseInvoiceSchemaType = z.infer<typeof purchaseInvoiceSchema>;
+export type PurchaseSchemaType = z.infer<typeof purchaseSchema>;
 
 export const PurchaseProductDetailSchema = z.object({
   quantity: z.coerce.number().int().min(1, "Quantity must be at least 1"),

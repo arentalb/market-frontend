@@ -1,17 +1,17 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
 import { InventoryTag, PurchaseInvoiceTag } from "@/constants/tags.ts";
-import { PurchaseInvoice } from "@/features/purchase/types/purchaseProduct.types.ts";
-import { PurchaseInvoiceSchemaType } from "@/features/purchase/schemas/purchaseSchema.ts";
+import { Purchase } from "@/features/purchase/types/purchaseProduct.types.ts";
+import { PurchaseSchemaType } from "@/features/purchase/schemas/purchaseSchema.ts";
 
-const purchaseInvoiceSlice = apiSlice.injectEndpoints({
+const purchaseSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createPurchaseInvoice: builder.mutation<
-      ApiResponse<{ invoice: PurchaseInvoice }>,
-      PurchaseInvoiceSchemaType
+    createPurchase: builder.mutation<
+      ApiResponse<{ invoice: Purchase }>,
+      PurchaseSchemaType
     >({
       query: (data) => ({
-        url: `purchase-invoice`,
+        url: `purchase`,
         method: "POST",
         body: data,
       }),
@@ -21,4 +21,4 @@ const purchaseInvoiceSlice = apiSlice.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useCreatePurchaseInvoiceMutation } = purchaseInvoiceSlice;
+export const { useCreatePurchaseMutation } = purchaseSlice;

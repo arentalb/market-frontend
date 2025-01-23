@@ -28,6 +28,6 @@ export type PurchasedProduct = {
   quantity: number;
   price: number;
 };
-export type PurchaseInvoice = {
+export type Purchase = {
   supplierId: number;
 };

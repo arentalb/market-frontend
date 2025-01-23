@@ -13,7 +13,7 @@ import { LoginPage } from "@/features/auth/pages/LoginPage.tsx";
 import { InventoryPage } from "@/features/inventory/pages/InventoryPage.tsx";
 import { SalePage } from "@/features/sale/pages/SalePage.tsx";
 import { PurchasePage } from "@/features/purchase/pages/PurchasePage.tsx";
-import { InvoicePage } from "@/features/invoice/pages/InvoicePage.tsx";
+import { PurchaseInvoicePage } from "@/features/invoice/pages/PurchaseInvoicePage.tsx";
 import { DeptPage } from "@/features/dept/pages/DeptPage.tsx";
 import { CustomerPage } from "@/features/customer/pages/CustomerPage.tsx";
 import { ProductsPage } from "@/features/product/pages/ProductsPage.tsx";
@@ -29,6 +29,8 @@ import { CategoryPage } from "@/features/category/pages/CategoryPage.tsx";
 import { ProductsDetailPage } from "@/features/product/pages/ProductsDetailPage.tsx";
 import { SupplierWorkerPage } from "@/features/company/pages/SupplierWorkerPage.tsx";
 import { UnitConversionPage } from "@/features/unit/pages/UnitConversionPage.tsx";
+import { SaleInvoicePage } from "@/features/invoice/pages/SaleInvoicePage.tsx";
+import { PurchaseInvoiceDetailPage } from "@/features/invoice/pages/PurchaseInvoiceDetailPage.tsx";
 
 const PrivateRoute = ({ allowedRoles }: { allowedRoles?: string[] }) => {
   const user = useSelector(getUser);
@@ -91,7 +93,24 @@ const router = createBrowserRouter([
           },
           {
             path: "invoices",
-            children: [{ index: true, element: <InvoicePage /> }],
+            children: [
+              {
+                index: true,
+                element: <Navigate to={"/app/invoices/purchase"} />,
+              },
+            ],
+          },
+          {
+            path: "invoices/purchase",
+            children: [{ index: true, element: <PurchaseInvoicePage /> }],
+          },
+          {
+            path: "invoices/purchase/:id",
+            children: [{ index: true, element: <PurchaseInvoiceDetailPage /> }],
+          },
+          {
+            path: "invoices/sale",
+            children: [{ index: true, element: <SaleInvoicePage /> }],
           },
           {
             path: "debts",

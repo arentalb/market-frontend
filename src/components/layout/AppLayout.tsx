@@ -39,8 +39,13 @@ export default function AppLayout() {
       icon: <ShoppingCart className="h-5 w-5" />,
     },
     {
-      name: "وەسڵەکان",
-      href: "/invoices",
+      name: "وەسڵی فرۆشتنەکان",
+      href: "/invoices/sale",
+      icon: <FileText className="h-5 w-5" />,
+    },
+    {
+      name: "وەسڵی کڕینەکان",
+      href: "/invoices/purchase",
       icon: <FileText className="h-5 w-5" />,
     },
     { name: "مەغزەن", href: "/inventory", icon: <Box className="h-5 w-5" /> },
@@ -188,7 +193,7 @@ export default function AppLayout() {
         </header>
 
         {/* Scrollable Main Content */}
-        <main className="flex-1 flex flex-col min-h-0 p-4 lg:p-8 bg-gray-50 dark:bg-gray-900">
+        <main className="flex-1 flex flex-col overflow-y-auto p-4 lg:p-8 bg-gray-50 dark:bg-gray-900">
           {/* Child Routes/Pages */}
           <Outlet />
         </main>
