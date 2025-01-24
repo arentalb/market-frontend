@@ -1,4 +1,3 @@
-import { InvoiceDetailPayment } from "@/features/invoice/types/purchaseInvoice.types.ts";
 import {
   Table,
   TableBody,
@@ -9,11 +8,12 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
+import { SaleInvoiceDetailPayment } from "@/features/saleInvoice/types/purchaseInvoice.types.ts";
 
-export function PurchaseInvoicePaymentsTable({
+export function SaleInvoicePaymentsTable({
   payments,
 }: {
-  payments: InvoiceDetailPayment[];
+  payments: SaleInvoiceDetailPayment[];
 }) {
   return (
     <div>

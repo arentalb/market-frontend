@@ -5,7 +5,7 @@ import { PurchaseSchemaType } from "@/features/purchase/schemas/purchaseSchema.t
 import {
   Invoice,
   InvoiceDetail,
-} from "@/features/invoice/types/purchaseInvoice.types.ts";
+} from "@/features/purchaseInvoice/types/purchaseInvoice.types.ts";
 
 const purchaseInvoiceSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

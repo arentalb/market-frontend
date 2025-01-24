@@ -1,4 +1,4 @@
-import { useGetPurchaseInvoicesQuery } from "@/features/invoice/api/purchaseInvoiceApiSlice.ts";
+import { useGetPurchaseInvoicesQuery } from "@/features/purchaseInvoice/api/purchaseInvoiceApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import {
@@ -11,8 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table.tsx";
 import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { InvoiceStatus } from "@/features/invoice/types/purchaseInvoice.types.ts";
-import { statusMapping } from "@/features/invoice/utils/statusMapping.ts";
+import { InvoiceStatus } from "@/features/purchaseInvoice/types/purchaseInvoice.types.ts";
+import { statusMapping } from "@/features/purchaseInvoice/utils/statusMapping.ts";
 import { Link } from "react-router-dom";
 import { SquareArrowOutUpRight } from "lucide-react";
 

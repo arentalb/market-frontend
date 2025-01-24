@@ -1,12 +1,12 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { useGetPurchaseInvoiceByIdQuery } from "@/features/invoice/api/purchaseInvoiceApiSlice.ts";
+import { useGetPurchaseInvoiceByIdQuery } from "@/features/purchaseInvoice/api/purchaseInvoiceApiSlice.ts";
 import { Loader } from "@/components/common/Loader.tsx";
 import { ErrorBox } from "@/components/common/ErrorBox.tsx";
 import { useParams } from "react-router-dom";
 import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
-import { PurchaseInvoiceProductTable } from "@/features/invoice/components/PurchaseInvoiceProductTable.tsx";
-import { PurchaseInvoicePaymentsTable } from "@/features/invoice/components/PurchaseInvoicePaymentsTable.tsx";
-import { PurchaseInvoiceGeneralDetail } from "@/features/invoice/components/PurchaseInvoiceGeneralDetail.tsx";
+import { PurchaseInvoiceProductTable } from "@/features/purchaseInvoice/components/PurchaseInvoiceProductTable.tsx";
+import { PurchaseInvoicePaymentsTable } from "@/features/purchaseInvoice/components/PurchaseInvoicePaymentsTable.tsx";
+import { PurchaseInvoiceGeneralDetail } from "@/features/purchaseInvoice/components/PurchaseInvoiceGeneralDetail.tsx";
 
 export function PurchaseInvoiceDetailPage() {
   const { id } = useParams();

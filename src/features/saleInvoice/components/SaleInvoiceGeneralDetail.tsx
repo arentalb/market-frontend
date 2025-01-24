@@ -1,14 +1,14 @@
+import { PaySaleInvoiceForm } from "@/features/saleInvoice/forms/PaySaleInvoiceForm.tsx";
 import {
-  InvoiceDetail,
   InvoiceStatus,
-} from "@/features/invoice/types/purchaseInvoice.types.ts";
-import { statusMapping } from "@/features/invoice/utils/statusMapping.ts";
-import { PayPurchaseInvoiceForm } from "@/features/invoice/forms/PayPurchaseInvoiceForm.tsx";
+  SaleInvoiceDetail,
+} from "@/features/saleInvoice/types/purchaseInvoice.types.ts";
+import { statusMapping } from "@/features/saleInvoice/utils/statusMapping.ts";
 
-export function PurchaseInvoiceGeneralDetail({
+export function SaleInvoiceGeneralDetail({
   invoice,
 }: {
-  invoice: InvoiceDetail;
+  invoice: SaleInvoiceDetail;
 }) {
   return (
     <div className="border-b-2 mb-4 rounded-lg py-4 ">
@@ -50,9 +50,9 @@ export function PurchaseInvoiceGeneralDetail({
         </div>
 
         <div className="flex flex-col">
-          <span className="font-medium text-gray-600">فرۆشیار</span>
+          <span className="font-medium text-gray-600">ناوی موشتەری</span>
           <span className="mt-1 text-lg font-bold text-gray-800">
-            {invoice.supplierName}
+            {invoice.customerName}
           </span>
         </div>
 
@@ -64,7 +64,7 @@ export function PurchaseInvoiceGeneralDetail({
         </div>
       </div>
       {invoice.status !== InvoiceStatus.Paid && (
-        <PayPurchaseInvoiceForm invoiceId={invoice.id} />
+        <PaySaleInvoiceForm invoiceId={invoice.id} />
       )}
     </div>
   );

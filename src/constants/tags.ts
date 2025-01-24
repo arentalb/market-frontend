@@ -8,3 +8,4 @@ export const SupplierTag = "Supplier";
 export const SupplierWorkerTag = "SupplierWorker";
 export const PurchaseInvoiceTag = "PurchaseInvoice";
 export const InventoryTag = "Inventory";
+export const SaleInvoiceTag = "SaleInvoiceTag";

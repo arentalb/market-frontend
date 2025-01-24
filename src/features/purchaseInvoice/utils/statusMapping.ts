@@ -1,4 +1,4 @@
-import { InvoiceStatus } from "@/features/invoice/types/purchaseInvoice.types.ts";
+import { InvoiceStatus } from "@/features/purchaseInvoice/types/purchaseInvoice.types.ts";
 
 export const statusMapping: { [key in InvoiceStatus]: string } = {
   [InvoiceStatus.Paid]: "پارەدراوە",

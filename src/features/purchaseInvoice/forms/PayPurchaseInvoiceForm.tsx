@@ -1,9 +1,9 @@
-import { usePayPurchaseInvoiceMutation } from "@/features/invoice/api/purchaseInvoicePaymentApiSlice.ts";
+import { usePayPurchaseInvoiceMutation } from "@/features/purchaseInvoice/api/purchaseInvoicePaymentApiSlice.ts";
 import { useForm } from "react-hook-form";
 import {
   payPurchaseInvoiceFormSchema,
   PayPurchaseInvoiceFormSchemaType,
-} from "@/features/invoice/schemas/payPurchaseInvoiceFormSchema.ts";
+} from "@/features/purchaseInvoice/schemas/payPurchaseInvoiceFormSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast.ts";
 import { ClientError } from "@/app/apiSlice.ts";
