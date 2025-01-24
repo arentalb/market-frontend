@@ -4,30 +4,34 @@ import {
   loadStateLocalStorage,
   saveStateLocalStorage,
 } from "@/lib/localStorage.ts";
-import { PurchasedProduct } from "@/features/purchase/types/purchaseProduct.types.ts";
+import { PurchaseInvoiceProductInCart } from "@/features/purchase/types/purchaseProduct.types.ts";
 
 const LOCAL_STORAGE_KEY = "purchase";
 
-const initialState: PurchasedProduct[] =
-  loadStateLocalStorage<PurchasedProduct[]>(LOCAL_STORAGE_KEY) || [];
+const initialState: PurchaseInvoiceProductInCart[] =
+  loadStateLocalStorage<PurchaseInvoiceProductInCart[]>(LOCAL_STORAGE_KEY) ||
+  [];
 
-const purchaseSlice = createSlice({
+const purchaseProductCartSlice = createSlice({
   name: "purchase",
   initialState,
   reducers: {
-    addPurchaseProduct: (state, action: PayloadAction<PurchasedProduct>) => {
-      const { product, unitId } = action.payload;
+    addPurchaseProductToCart: (
+      state,
+      action: PayloadAction<PurchaseInvoiceProductInCart>,
+    ) => {
+      const { product, unit } = action.payload;
       const existingProduct = state.find(
         (item) => item.product.id === product.id,
       );
       if (existingProduct) {
-        existingProduct.unitId = unitId;
+        existingProduct.unit = unit;
       } else {
         state.push(action.payload);
       }
       saveStateLocalStorage(LOCAL_STORAGE_KEY, state);
     },
-    removePurchaseProduct: (state, action: PayloadAction<number>) => {
+    removePurchaseProductFromCart: (state, action: PayloadAction<number>) => {
       const newState = state.filter(
         (item) => item.product.id !== action.payload,
       );
@@ -35,7 +39,7 @@ const purchaseSlice = createSlice({
       state.push(...newState);
       saveStateLocalStorage(LOCAL_STORAGE_KEY, state);
     },
-    updatePurchaseProduct: (
+    updatePurchaseProductFromCart: (
       state,
       action: PayloadAction<{
         productId: number;
@@ -50,7 +54,7 @@ const purchaseSlice = createSlice({
         saveStateLocalStorage(LOCAL_STORAGE_KEY, state);
       }
     },
-    resetPurchaseProducts: (state) => {
+    removeAllPurchaseProductsInCart: (state) => {
       state.length = 0;
       saveStateLocalStorage(LOCAL_STORAGE_KEY, state);
     },
@@ -58,12 +62,12 @@ const purchaseSlice = createSlice({
 });
 
 export const {
-  addPurchaseProduct,
-  removePurchaseProduct,
-  updatePurchaseProduct,
-  resetPurchaseProducts,
-} = purchaseSlice.actions;
+  addPurchaseProductToCart,
+  removePurchaseProductFromCart,
+  updatePurchaseProductFromCart,
+  removeAllPurchaseProductsInCart,
+} = purchaseProductCartSlice.actions;
 
 export const selectPurchaseProducts = (state: RootState) => state.purchase;
 
-export default purchaseSlice.reducer;
+export default purchaseProductCartSlice.reducer;

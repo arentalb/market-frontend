@@ -4,13 +4,13 @@ import { ProductTag } from "@/constants/tags.ts";
 import {
   Product,
   ProductDetail,
+  ProductSearchResult,
 } from "@/features/product/types/product.types.ts";
 
 import {
   createProductSchemaType,
   updateProductSchemaType,
 } from "@/features/product/schemas/productSchemas.ts";
-import { ProductSearchResult } from "@/features/purchase/types/purchaseProduct.types.ts";
 
 const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

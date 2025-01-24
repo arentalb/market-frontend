@@ -1,4 +1,4 @@
-import { Unit } from "@/features/unit/types/unit.types.ts";
+import { Unit, UnitWithPrice } from "@/features/unit/types/unit.types.ts";
 import { Category } from "@/features/category/types/category.types.ts";
 
 export interface Product {
@@ -35,3 +35,12 @@ export interface ProductDetailUnitPrice {
   price: string;
   effectiveDate: string;
 }
+
+export type ProductSearchResult = {
+  id: number;
+  name: string;
+  description: string;
+  baseUnit: Unit;
+  category: Category;
+  productUnits: UnitWithPrice[];
+};

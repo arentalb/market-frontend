@@ -1,38 +1,32 @@
-export type Unit = {
+export interface PurchaseInvoice {
   id: number;
-  unitName: string;
-  unitSymbol: string;
-};
-export type UnitWithPrice = {
-  id: number;
-  unitName: string;
-  unitSymbol: string;
-  sellPrice: number | null;
-};
-export type Category = {
-  id: number;
-  name: string;
-};
+  processedBy: number;
+  customerId: number;
+  totalAmount: number;
+  paidSoFar: number;
+  status: string;
+}
 
-export type ProductSearchResult = {
-  id: number;
-  name: string;
-  description: string;
-  baseUnit: Unit;
-  category: Category;
-  productUnits: UnitWithPrice[];
-};
+export interface CreatePurchaseInvoicePayload {
+  supplierId: number;
+  products: {
+    productId: number;
+    unitId: number;
+    quantity: number;
+    price: number;
+  }[];
+}
 
-export type PurchasedProduct = {
+export type PurchaseInvoiceProductInCart = {
   product: {
     id: number;
     name: string;
     description: string;
   };
-  unitId: Unit;
+  unit: {
+    id: number;
+    unitSymbol: string;
+  };
   quantity: number;
   price: number;
-};
-export type Purchase = {
-  supplierId: number;
 };

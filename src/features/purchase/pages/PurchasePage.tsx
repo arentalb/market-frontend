@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/common/PageHeader";
-import { FoundProductList } from "@/features/purchase/components/FoundedProductList.tsx";
-import { SelectedProductList } from "@/features/purchase/components/SelectedProductList.tsx";
+import { FoundProductList } from "@/features/purchase/components/FoundedPurchaseProductList.tsx";
+import { PurchaseProductCartList } from "@/features/purchase/components/PurchaseProductCartList.tsx";
 
 export function PurchasePage() {
   return (
@@ -8,7 +8,7 @@ export function PurchasePage() {
       <PageHeader title="کڕین" />
       <div className="grid grid-cols-2 gap-2 flex-grow min-h-0">
         <FoundProductList />
-        <SelectedProductList />
+        <PurchaseProductCartList />
       </div>
     </div>
   );

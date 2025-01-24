@@ -4,7 +4,7 @@ import apiSlice from "./apiSlice.ts";
 import authReducer from "../features/auth/store/authSlice.ts";
 import productReducer from "@/features/product/stores/productSlice.ts";
 import supplierReducer from "../features/company/store/supplierSlice.ts";
-import purchaseReducer from "../features/purchase/stores/purchaseSlice.ts";
+import purchaseReducer from "../features/purchase/stores/purchaseProductCartSlice.ts";
 import saleReducer from "../features/sale/stores/saleProductCartSlice.ts";
 
 const store = configureStore({

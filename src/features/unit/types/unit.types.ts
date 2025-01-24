@@ -14,3 +14,10 @@ export interface UnitConversion {
   toUnit: Unit;
   fromUnit: Unit;
 }
+
+export type UnitWithPrice = {
+  id: number;
+  unitName: string;
+  unitSymbol: string;
+  sellPrice: number | null;
+};

@@ -1,15 +1,15 @@
+import { ProductSearchResult } from "@/features/product/types/product.types.ts";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { addSaleProductToCart } from "@/features/sale/stores/saleProductCartSlice.ts";
+import { addPurchaseProductToCart } from "@/features/purchase/stores/purchaseProductCartSlice.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { ArrowLeft } from "lucide-react";
-import { ProductSearchResult } from "@/features/product/types/product.types.ts";
 
 interface FoundProductCardProps {
   product: ProductSearchResult;
 }
 
-export function FoundSaleProductCard({ product }: FoundProductCardProps) {
+export function FoundPurchaseProductCard({ product }: FoundProductCardProps) {
   const dispatch = useDispatch();
   const [selectedUnitId, setSelectedUnitId] = useState<number | null>(null);
 
@@ -23,18 +23,21 @@ export function FoundSaleProductCard({ product }: FoundProductCardProps) {
     const selectedUnit = product.productUnits.find(
       (unit) => unit.id === selectedUnitId,
     );
-    if (!selectedUnit || !selectedUnit.sellPrice) return;
+    if (!selectedUnit) return;
 
     dispatch(
-      addSaleProductToCart({
+      addPurchaseProductToCart({
         product: {
-          id: product.id,
           name: product.name,
           description: product.description,
+          id: product.id,
         },
-        unit: { id: selectedUnit.id, unitSymbol: selectedUnit.unitSymbol },
-        price: selectedUnit.sellPrice,
+        unit: {
+          id: selectedUnit.id,
+          unitSymbol: selectedUnit.unitSymbol,
+        },
         quantity: 1,
+        price: 1000,
       }),
     );
 
@@ -46,24 +49,19 @@ export function FoundSaleProductCard({ product }: FoundProductCardProps) {
       <div>
         <p className="text-lg font-semibold">{product.name}</p>
         <p className="text-sm text-gray-600">{product.description}</p>
-
         <div className="flex flex-wrap gap-2 mt-1">
-          {product.productUnits?.map(
-            (unit) =>
-              unit.sellPrice && (
-                <Button
-                  key={unit.id}
-                  variant={selectedUnitId === unit.id ? "default" : "secondary"}
-                  onClick={() => onSelectUnit(unit.id)}
-                  className="border"
-                >
-                  {unit.unitSymbol} - {unit.sellPrice} دینار
-                </Button>
-              ),
-          )}
+          {product.productUnits?.map((unit) => (
+            <Button
+              key={unit.id}
+              variant={selectedUnitId === unit.id ? "default" : "secondary"}
+              onClick={() => onSelectUnit(unit.id)}
+              className={"border"}
+            >
+              {unit.unitSymbol}
+            </Button>
+          ))}
         </div>
       </div>
-
       <Button
         onClick={onAddProduct}
         disabled={selectedUnitId === null}
