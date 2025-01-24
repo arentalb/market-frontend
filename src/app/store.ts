@@ -5,6 +5,7 @@ import authReducer from "../features/auth/store/authSlice.ts";
 import productReducer from "@/features/product/stores/productSlice.ts";
 import supplierReducer from "../features/company/store/supplierSlice.ts";
 import purchaseReducer from "../features/purchase/stores/purchaseSlice.ts";
+import saleReducer from "../features/sale/stores/saleProductCartSlice.ts";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,8 @@ const store = configureStore({
     product: productReducer,
     supplier: supplierReducer,
     purchase: purchaseReducer,
+    sale: saleReducer,
+
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

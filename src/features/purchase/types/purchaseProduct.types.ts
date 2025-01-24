@@ -3,7 +3,12 @@ export type Unit = {
   unitName: string;
   unitSymbol: string;
 };
-
+export type UnitWithPrice = {
+  id: number;
+  unitName: string;
+  unitSymbol: string;
+  sellPrice: number | null;
+};
 export type Category = {
   id: number;
   name: string;
@@ -15,7 +20,7 @@ export type ProductSearchResult = {
   description: string;
   baseUnit: Unit;
   category: Category;
-  productUnits: Unit[];
+  productUnits: UnitWithPrice[];
 };
 
 export type PurchasedProduct = {
