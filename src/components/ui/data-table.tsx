@@ -10,8 +10,6 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -21,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { FilterInput } from "@/components/ui/filter-input.tsx";
 
 interface FilterableColumn {
   id: string;
@@ -141,13 +140,13 @@ export function DataTable<TData, TValue>({
           {filterableColumns.map((col) => {
             const tableCol = table.getColumn(col.id);
             if (!tableCol) return null;
+
             return (
-              <Input
+              <FilterInput
                 key={col.id}
-                placeholder={col.placeholder ?? `Filter ${col.id}...`}
-                value={(tableCol.getFilterValue() as string) ?? ""}
-                onChange={(e) => tableCol.setFilterValue(e.target.value)}
-                className="max-w-sm"
+                column={tableCol}
+                placeholder={col.placeholder}
+                debounceDelay={1000}
               />
             );
           })}
