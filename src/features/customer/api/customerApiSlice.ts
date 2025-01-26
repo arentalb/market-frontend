@@ -1,5 +1,6 @@
 import apiSlice from "../../../app/apiSlice.ts";
 import { ApiResponse } from "@/types/TApiResponse.ts";
+import { buildQueryString } from "@/lib/buildQueryString.ts";
 
 export interface Customer {
   id: number;
@@ -20,22 +21,23 @@ const customerSlice = apiSlice.injectEndpoints({
         firstName: string;
         phone: string;
         sortBy: string;
-        sortDir: string;
+        sortDir: "asc" | "desc";
       }
     >({
       query: ({ page, size, firstName, phone, sortBy, sortDir }) => {
-        let url = `/customers?page=${page}&size=${size}`;
-        if (firstName) {
-          url += `&filter=firstName:like:${firstName}`;
-        }
-        if (phone) {
-          url += `&filter=phone:like:${phone}`;
-        }
-        if (sortDir && sortBy) {
-          url += `&sort=${sortBy}:${sortDir}`;
-        }
+        const queryString = buildQueryString({
+          page,
+          size,
+          filters: {
+            firstName: firstName || "",
+            phone: phone || "",
+          },
+          sortBy,
+          sortDir,
+        });
+
         return {
-          url: url,
+          url: `/customers${queryString}`,
           method: "GET",
         };
       },
