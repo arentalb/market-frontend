@@ -3,4 +3,9 @@ export interface ApiResponse<T> {
   message: string;
   timestamp: string;
   data: T;
+  meta?: {
+    totalItems: number;
+    page: number;
+    size: number;
+  };
 }
