@@ -8,24 +8,26 @@ import { buildQueryString } from "@/lib/buildQueryString.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUnits: builder.query<ApiResponse<{ units: Unit[] }>, void>({
-      query: () => ({
-        url: `units`,
-        method: "GET",
-      }),
+    getUnits: builder.query<
+      ApiResponse<{ units: Unit[] }>,
+      {
+        page: number;
+        size: number;
+      }
+    >({
+      query: ({ page, size }) => {
+        const queryString = buildQueryString({
+          page,
+          size,
+        });
+        return {
+          url: `/units${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [UnitTag],
     }),
-    createUnit: builder.mutation<
-      ApiResponse<{ unit: Unit }>,
-      createUnitSchemaType
-    >({
-      query: (data) => ({
-        url: `units`,
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: [UnitTag],
-    }),
+
     getUnitConversions: builder.query<
       ApiResponse<{ conversions: UnitConversion[] }>,
       {
@@ -45,7 +47,17 @@ const unitSlice = apiSlice.injectEndpoints({
       },
       providesTags: [UnitConversionTag],
     }),
-
+    createUnit: builder.mutation<
+      ApiResponse<{ unit: Unit }>,
+      createUnitSchemaType
+    >({
+      query: (data) => ({
+        url: `units`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [UnitTag],
+    }),
     createUnitConversion: builder.mutation<
       ApiResponse<{ conversion: UnitConversion }>,
       createUnitConversionSchemaType

@@ -2,8 +2,8 @@ import { PageHeader } from "@/components/common/PageHeader.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { useState } from "react";
-import { UnitTable } from "@/features/unit/components/UnitTable.tsx";
 import { CreateUnitForm } from "@/features/unit/forms/CreateUnitForm.tsx";
+import { UnitTable } from "@/features/unit/components/UnitTable.tsx";
 
 export function UnitPage() {
   const [open, setOpen] = useState(false);
