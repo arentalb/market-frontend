@@ -1,65 +1,104 @@
+import React, { useEffect, useState } from "react";
+import { DataTable } from "@/components/ui/data-table";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table.tsx";
-import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
-import { useGetUnitConversionsQuery } from "@/features/unit/api/unitApiSlice.ts";
+  ColumnDef,
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 import { Loader } from "@/components/common/Loader.tsx";
-import { ErrorBox } from "@/components/common/ErrorBox.tsx";
+import { useToast } from "@/hooks/use-toast.ts";
+import { ClientError } from "@/app/apiSlice.ts";
+import { useGetUnitConversionsQuery } from "@/features/unit/api/unitApiSlice.ts";
+import { UnitConversion } from "@/features/unit/types/unit.types.ts";
+import { unitConversionDetailFormater } from "@/features/unit/utils/kurdishFormatedRate.tsx";
 
 export function UnitConversionTable() {
-  const { isLoading, data, error } = useGetUnitConversionsQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const [sorting] = useState<SortingState>([]);
+  const [columnFilters] = useState<ColumnFiltersState>([]);
 
-  if (error) {
-    return <ErrorBox error={error} />;
-  }
+  const { toast } = useToast();
 
-  const conversions = data?.data.conversions || [];
+  const { data, isLoading, isError, error } = useGetUnitConversionsQuery({
+    page: pagination.pageIndex,
+    size: pagination.pageSize,
+  });
+
+  const customers = data?.data.conversions ?? [];
+  const totalItems = data?.meta?.totalItems ?? 0;
+  const serverSize = data?.meta?.size ?? 10;
+  const totalPages = Math.ceil(totalItems / serverSize);
+
+  useEffect(() => {
+    if (isError) {
+      const err = error as ClientError;
+      toast({
+        variant: "destructive",
+        title: err.message,
+      });
+    }
+  }, [error, isError, toast]);
   return (
     <div>
-      <Table>
-        <TableCaption>لیستی هەموو پەیوەندی یەکەکان</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-right"> #</TableHead>
-            <TableHead className="text-right"> لە</TableHead>
-            <TableHead className="text-right">بۆ </TableHead>
-            <TableHead className="text-right"> ڕێژە</TableHead>
-            <TableHead className="text-right"> ووردەکاری</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {conversions.map((conversion, index) => (
-            <TableRow key={conversion.id}>
-              <TableCell className="font-medium">
-                {kurdishNumberFormatter.format(index + 1)}
-              </TableCell>
+      {isLoading && <Loader />}
 
-              <TableCell>{conversion.fromUnit.unitName}</TableCell>
-              <TableCell>{conversion.toUnit.unitSymbol}</TableCell>
-              <TableCell>{conversion.conversionRate}</TableCell>
-
-              <TableCell>
-                {unitConversionDetailFormater(
-                  conversion.toUnit.unitSymbol,
-                  conversion.fromUnit.unitSymbol,
-                  conversion.conversionRate,
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <DataTable
+        data={customers}
+        columns={unitConversionColumns}
+        manualPagination
+        manualSorting
+        manualFiltering
+        pageCount={totalPages}
+        onPaginationChange={setPagination}
+        pagination={pagination}
+        sorting={sorting}
+        columnFilters={columnFilters}
+      />
     </div>
   );
 }
+
+const unitConversionColumns: ColumnDef<UnitConversion>[] = [
+  {
+    accessorKey: "fromUnit.unitSymbol",
+    header: () => {
+      return <div className="text-right">لە</div>;
+    },
+    enableSorting: true,
+  },
+
+  {
+    accessorKey: "toUnit.unitSymbol",
+    header: () => <div className="text-right">بۆ</div>,
+    enableSorting: false,
+  },
+
+  {
+    accessorKey: "conversionRate",
+    header: () => <div className="text-right">رێژە</div>,
+    enableSorting: false,
+  },
+
+  {
+    id: "detail",
+    header: () => <div className="text-right">وردەکاری</div>,
+    enableSorting: false,
+    cell: ({ row }) => {
+      const { toUnit, fromUnit, conversionRate } = row.original;
+      return (
+        <div className="text-right font-medium">
+          {unitConversionDetailFormater(
+            toUnit.unitSymbol,
+            fromUnit.unitSymbol,
+            conversionRate,
+          )}
+        </div>
+      );
+    },
+  },
+];

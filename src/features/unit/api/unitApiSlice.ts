@@ -4,6 +4,7 @@ import { Unit, UnitConversion } from "@/features/unit/types/unit.types.ts";
 import { UnitConversionTag, UnitTag } from "@/constants/tags.ts";
 import { createUnitSchemaType } from "@/features/unit/schemas/unitSchemas.ts";
 import { createUnitConversionSchemaType } from "@/features/unit/schemas/unitConversionSchema.ts";
+import { buildQueryString } from "@/lib/buildQueryString.ts";
 
 const unitSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,12 +28,21 @@ const unitSlice = apiSlice.injectEndpoints({
     }),
     getUnitConversions: builder.query<
       ApiResponse<{ conversions: UnitConversion[] }>,
-      void
+      {
+        page: number;
+        size: number;
+      }
     >({
-      query: () => ({
-        url: `conversions`,
-        method: "GET",
-      }),
+      query: ({ page, size }) => {
+        const queryString = buildQueryString({
+          page,
+          size,
+        });
+        return {
+          url: `/conversions${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [UnitConversionTag],
     }),
 
