@@ -1,9 +1,9 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { SuppliersTable } from "@/features/company/components/SuppliersTable.tsx";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { CreateSupplierForm } from "@/features/company/forms/CreateSupplierForm.tsx";
 import { useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
+import { SupplierTable } from "@/features/company/components/SupplierTable.tsx";
 
 export function SupplierPage() {
   const [open, setOpen] = useState(false);
@@ -15,7 +15,7 @@ export function SupplierPage() {
         <div className={"mb-2 flex justify-end items-center"}>
           <Button onClick={() => setOpen(true)}>کۆمپانیا زیاد بکە </Button>
         </div>
-        <SuppliersTable />
+        <SupplierTable />
       </div>
       <CustomDialog
         open={open}

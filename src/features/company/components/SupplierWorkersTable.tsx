@@ -1,47 +1,115 @@
+import { useEffect, useState } from "react";
+import { DataTable } from "@/components/ui/data-table";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table.tsx";
-import { kurdishNumberFormatter } from "@/lib/utils.tsx";
-import { useParams } from "react-router-dom";
+  ColumnDef,
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 import { Loader } from "@/components/common/Loader.tsx";
-import { ErrorBox } from "@/components/common/ErrorBox.tsx";
-import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
-import { useState } from "react";
-import { PencilLine, Trash } from "lucide-react";
-import { CustomDialog } from "@/components/CustomDialog.tsx";
-import { EditSupplierWorkerForm } from "@/features/company/forms/EditSupplierWorkerForm.tsx";
+import { useToast } from "@/hooks/use-toast.ts";
+import { ClientError } from "@/app/apiSlice.ts";
+import { MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useParams } from "react-router-dom";
 import {
   useDeleteSupplierWorkerMutation,
   useGetSupplierWorkersQuery,
 } from "@/features/company/api/supplierWorkerApiSlice.ts";
 import { SupplierWorker } from "@/features/company/types/supplier.types.ts";
+import { CustomDialog } from "@/components/CustomDialog.tsx";
+import { EditSupplierWorkerForm } from "@/features/company/forms/EditSupplierWorkerForm.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useToast } from "@/hooks/use-toast.ts";
-import { ClientError } from "@/app/apiSlice.ts";
+import { ErrorBox } from "@/components/common/ErrorBox.tsx";
+import { NotFoundPage } from "@/features/common/pages/NotFoundPage.tsx";
 
 export function SupplierWorkersTable() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const supplierId = Number(id);
-  const [updateWorkerDialogOpen, setUpdateWorkerDialogOpen] = useState(false);
-  const [deleteWorkerDialogOpen, setDeleteWorkerDialogOpen] = useState(false);
 
-  const [selectedWorker, setSelectedWorker] = useState<SupplierWorker | null>(
-    null,
-  );
-  const { data, isLoading, error } = useGetSupplierWorkersQuery(
-    { supplierId: supplierId },
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const [columnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting] = useState<SortingState>([]);
+
+  const { toast } = useToast();
+
+  const { data, isLoading, isError, error } = useGetSupplierWorkersQuery(
+    { supplierId, page: pagination.pageIndex, size: pagination.pageSize },
     { skip: !id || isNaN(supplierId) },
   );
 
+  const workers = data?.data.workers ?? [];
+  const totalItems = data?.meta?.totalItems ?? 0;
+  const serverSize = data?.meta?.size ?? 10;
+  const totalPages = Math.ceil(totalItems / serverSize);
+
   const [deleteSupplierWorker, { isLoading: isLoadingDelete }] =
     useDeleteSupplierWorkerMutation();
-  const { toast } = useToast();
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedWorker, setSelectedWorker] = useState<SupplierWorker | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (isError) {
+      const err = error as ClientError;
+      toast({
+        variant: "destructive",
+        title: err.message,
+      });
+    }
+  }, [error, isError, toast]);
+
+  const handleEditWorker = (worker: SupplierWorker) => {
+    setSelectedWorker(worker);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleDeleteWorker = (worker: SupplierWorker) => {
+    setSelectedWorker(worker);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteWorker = async () => {
+    if (!selectedWorker) return;
+    try {
+      await deleteSupplierWorker({
+        supplierId,
+        workerId: selectedWorker.id,
+      }).unwrap();
+      toast({
+        title: "Success",
+        description: "Worker deleted successfully.",
+      });
+      setIsDeleteDialogOpen(false);
+      setSelectedWorker(null);
+    } catch (e) {
+      const err = e as ClientError;
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message,
+      });
+    }
+  };
+
+  const handleCloseEditDialog = () => {
+    setIsEditDialogOpen(false);
+    setSelectedWorker(null);
+  };
 
   if (!supplierId) {
     return <NotFoundPage />;
@@ -50,106 +118,62 @@ export function SupplierWorkersTable() {
   if (isLoading) {
     return <Loader />;
   }
+
+  if (isError) {
+    return <ErrorBox error={error} />;
+  }
+
   if (!data?.data) {
     return <NotFoundPage />;
   }
 
-  if (data.data.workers.length === 0) {
+  if (workers.length === 0) {
     return (
-      <p className="text-center text-lg text-gray-500">هیچ مەندوبێک نییە </p>
+      <p className="text-center text-lg text-gray-500">هیچ مەندوبێک نییە</p>
     );
   }
-  if (error) {
-    return <ErrorBox error={error} />;
-  }
-  function handleDeleteProduct() {
-    try {
-      deleteSupplierWorker({
-        supplierId,
-        workerId: selectedWorker?.id as number,
-      });
-      setDeleteWorkerDialogOpen(false);
-    } catch (e) {
-      const error = e as ClientError;
-      toast({
-        title: "هەڵە",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  }
-  const workers = data?.data.workers || [];
+
   return (
     <div>
-      <Table>
-        <TableCaption>لیستی هەموو مەندوبەکانی کۆمپانیا</TableCaption>
+      <DataTable
+        data={workers}
+        columns={workerColumns(handleEditWorker, handleDeleteWorker)}
+        manualPagination
+        pageCount={totalPages}
+        manualSorting
+        manualFiltering
+        onPaginationChange={setPagination}
+        pagination={pagination}
+        sorting={sorting}
+        columnFilters={columnFilters}
+      />
 
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-right"> #</TableHead>
-            <TableHead className="text-right">ناوی مەندوب</TableHead>
-            <TableHead className="text-right">ژمارەی مەندوب</TableHead>
-            <TableHead className="text-right"> کردارەکان</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {workers.map((worker, index) => (
-            <TableRow key={worker.id}>
-              <TableCell className="font-medium">
-                {kurdishNumberFormatter.format(index + 1)}
-              </TableCell>
-
-              <TableCell>{worker.name}</TableCell>
-              <TableCell>{worker.phone}</TableCell>
-
-              <TableCell>
-                <div className={"flex gap-2"}>
-                  <button
-                    onClick={() => {
-                      setUpdateWorkerDialogOpen(true);
-                      setSelectedWorker(worker);
-                    }}
-                  >
-                    <PencilLine width={18} height={18} />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setDeleteWorkerDialogOpen(true);
-                      setSelectedWorker(worker);
-                    }}
-                  >
-                    <Trash width={18} height={18} />
-                  </button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
       {selectedWorker && (
         <CustomDialog
-          open={updateWorkerDialogOpen}
-          setOpen={setUpdateWorkerDialogOpen}
-          title="زانیاری کارمەند  تازە بکەرەوە"
+          open={isEditDialogOpen}
+          setOpen={setIsEditDialogOpen}
+          title="زانیاری کارمەند تازە بکەرەوە"
           description="دڵنیا بەرەوە لە هەموو زانیاریەکان"
         >
           <EditSupplierWorkerForm
-            onClose={() => setUpdateWorkerDialogOpen(false)}
+            onClose={handleCloseEditDialog}
             worker={selectedWorker}
           />
         </CustomDialog>
       )}
+
       {selectedWorker && (
         <CustomDialog
-          open={deleteWorkerDialogOpen}
-          setOpen={setDeleteWorkerDialogOpen}
-          title=" کارمەند بسڕەوە"
-          description="دوای سرینەوە ناتوانیت بیگەڕێنیتەوە"
+          open={isDeleteDialogOpen}
+          setOpen={setIsDeleteDialogOpen}
+          title="کارمەند بسڕەوە"
+          description="دوای سڕینەوە ناتوانیت بیگەڕێنیتەوە"
         >
           <Button
-            className={"w-full"}
-            variant={"destructive"}
-            onClick={handleDeleteProduct}
+            className="w-full"
+            variant="destructive"
+            onClick={confirmDeleteWorker}
+            disabled={isLoadingDelete}
           >
             {isLoadingDelete ? "سڕینەوە ..." : "کارمەند بسڕەوە"}
           </Button>
@@ -158,3 +182,55 @@ export function SupplierWorkersTable() {
     </div>
   );
 }
+
+const workerColumns = (
+  handleEditWorker: (worker: SupplierWorker) => void,
+  handleDeleteWorker: (worker: SupplierWorker) => void,
+): ColumnDef<SupplierWorker>[] => [
+  {
+    accessorKey: "name",
+    header: () => <div className="text-right">ناوی مەندوب</div>,
+    cell: ({ getValue }) => (
+      <div className="text-right">{getValue<string>()}</div>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "phone",
+    header: () => <div className="text-right">ژمارەی مەندوب</div>,
+    cell: ({ getValue }) => (
+      <div className="text-right">{getValue<string>()}</div>
+    ),
+    enableSorting: false,
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-right">کردارەکان</div>,
+    cell: ({ row }) => {
+      const worker = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center p-2">
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>کردارەکان</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => handleEditWorker(worker)}>
+              گۆڕینی زانیاری
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleDeleteWorker(worker)}
+              className="text-red-500"
+            >
+              بسڕینەوە
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+    enableSorting: false,
+  },
+];

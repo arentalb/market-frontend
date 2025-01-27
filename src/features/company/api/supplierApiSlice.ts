@@ -7,14 +7,27 @@ import {
   updateSupplierSchemaType,
 } from "@/features/company/schemas/supplierSchemas.ts";
 import { Supplier } from "@/features/company/types/supplier.types.ts";
+import { buildQueryString } from "@/lib/buildQueryString.ts";
 
 const supplierSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getSuppliers: builder.query<ApiResponse<{ suppliers: Supplier[] }>, void>({
-      query: () => ({
-        url: `suppliers`,
-        method: "GET",
-      }),
+    getSuppliers: builder.query<
+      ApiResponse<{ suppliers: Supplier[] }>,
+      {
+        page: number;
+        size: number;
+      }
+    >({
+      query: ({ page, size }) => {
+        const queryString = buildQueryString({
+          page,
+          size,
+        });
+        return {
+          url: `/suppliers${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [SupplierTag],
     }),
 

@@ -1,9 +1,9 @@
 import { PageHeader } from "@/components/common/PageHeader.tsx";
-import { SupplierWorkersTable } from "@/features/company/components/SupplierWorkersTable.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useState } from "react";
 import { CustomDialog } from "@/components/CustomDialog.tsx";
 import { CreateSupplierWorkerForm } from "@/features/company/forms/CreateSupplierWorkerForm.tsx";
+import { SupplierWorkersTable } from "@/features/company/components/SupplierWorkersTable.tsx";
 
 export function SupplierWorkerPage() {
   const [open, setOpen] = useState(false);

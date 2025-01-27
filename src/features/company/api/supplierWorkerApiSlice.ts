@@ -8,17 +8,24 @@ import {
 
 import { SupplierWorker } from "@/features/company/types/supplier.types.ts";
 import { SupplierWorkerTag } from "@/constants/tags.ts";
+import { buildQueryString } from "@/lib/buildQueryString.ts";
 
 const supplierWorkerSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSupplierWorkers: builder.query<
       ApiResponse<{ workers: SupplierWorker[] }>,
-      { supplierId: number }
+      { supplierId: number; page: number; size: number }
     >({
-      query: ({ supplierId }) => ({
-        url: `suppliers/${supplierId}/workers`,
-        method: "GET",
-      }),
+      query: ({ supplierId, page, size }) => {
+        const queryString = buildQueryString({
+          page,
+          size,
+        });
+        return {
+          url: `/suppliers/${supplierId}/workers${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: [SupplierWorkerTag],
     }),
 
