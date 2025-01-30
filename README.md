@@ -1,50 +1,22 @@
-# React + TypeScript + Vite
+# Frontend for forever market 
+also you can find the backend for this project at https://github.com/arentalb/market-backend (NestJs)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![forever-market (1)](https://github.com/user-attachments/assets/d0f31423-a24d-47e9-acea-91649ebb50d4)
+![forever-market (2)](https://github.com/user-attachments/assets/fdf0fdaa-b1a9-4810-ae60-77540ed8617b)
+![forever-market (3)](https://github.com/user-attachments/assets/0d59d378-3164-4b94-bad9-1c951d164676)
+![forever-market (4)](https://github.com/user-attachments/assets/86304a0f-b2ec-498e-9f2b-91f1451ff252)
+![forever-market (5)](https://github.com/user-attachments/assets/e885a4fa-5a18-469d-8797-4106cf65fb78)
+![forever-market (6)](https://github.com/user-attachments/assets/abcef1b6-e82a-485a-828b-6a639a0625db)
+![forever-market (7)](https://github.com/user-attachments/assets/9e43eecc-f1c6-4bfe-a932-7ea65871353b)
+![forever-market (8)](https://github.com/user-attachments/assets/09cce8bd-64fb-4ebf-bf15-da79ddbb3c52)
+![forever-market (9)](https://github.com/user-attachments/assets/352107a2-65b2-414d-b1d8-2176b7a40d1b)
+![forever-market (10)](https://github.com/user-attachments/assets/33c829d0-e7bc-43a5-bdd1-e7f11c9fe3d1)
+![forever-market (11)](https://github.com/user-attachments/assets/6bf3ccc2-4fbd-426a-a6c3-b130d69348ff)
+![forever-market (12)](https://github.com/user-attachments/assets/0be306ce-20f9-4d46-a894-81534fef90de)
+![forever-market (13)](https://github.com/user-attachments/assets/1d062faa-b465-4f32-bade-aefd04eae602)
+![forever-market (14)](https://github.com/user-attachments/assets/65dfcd1c-496c-4fca-9ec3-95170444115b)
+![forever-market (15)](https://github.com/user-attachments/assets/799ceeaf-b7ba-4cc1-a174-457d0b9e17c4)
+![forever-market (16)](https://github.com/user-attachments/assets/0a13f41c-934c-4e2c-91a6-2a88647ab73b)
+![forever-market (17)](https://github.com/user-attachments/assets/4d585df6-c0ec-462a-8b53-e9a471aa5550)
+![forever-market (18)](https://github.com/user-attachments/assets/7ea16bbe-5a5a-46fd-8ddf-7020824dbfd2)
+![forever-market (19)](https://github.com/user-attachments/assets/6fa74751-fa20-4889-addb-bf8a51ea11a1)
